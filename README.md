@@ -12,21 +12,37 @@ Key Features:
 
 Project Structure:
 
+
 Food Drive-2500/
+
 │── ml_project/
+
 │   ├── data/                  # Data Directory
+
 │   │   ├── raw/               # Raw CSV Files (Unprocessed)
+
 │   │   ├── external/          # External Datasets (Property Assessment)
+
 │   │   ├── processed/         # Cleaned & Processed Datasets
+
 │   ├── models/                # Saved Machine Learning Models
+
 │   ├── reports                # Saved Feature Importance & Heatmap
+
 │   ├── src/                   # Source Code for ML Pipeline
+
 │   │   ├── preprocess.py      # Data Preprocessing & Cleaning
+
 │   │   ├── train.py           # Model Training & Saving
+
 │   │   ├── evaluate.py        # Model Evaluation & Best Model Selection
+
 |   |   ├── feature_analysis.py# 
+
 │   │   ├── predict.py         # Making Predictions using Best Model
+
 │── README.md                  # Project Documentation
+
 │── requirements.txt           # Dependencies & Libraries
 
 Dataset:
