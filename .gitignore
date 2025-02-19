@@ -1,3 +1,4 @@
 ml_project/data/external/*.csv
 myenv/
 *.so
+venv/
