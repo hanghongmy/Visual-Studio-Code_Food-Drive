@@ -10,7 +10,7 @@ from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 class Trainer:
-    def __init__(self, train_data_path: str, test_data_path: str, models_dir: str = "ml_project/models/"):
+    def __init__(self, train_data_path: str, test_data_path: str, models_dir: str = "models/"):
         """
         Initializes the Trainer class with paths to processed data and model saving.
 
@@ -159,8 +159,8 @@ class Trainer:
 # Example Usage:
 if __name__ == "__main__":
     trainer = Trainer(
-        train_data_path="ml_project/data/processed/Food_Drive_2023_Processed.csv",  # Training Data (Food Drive 2023)
-        test_data_path="ml_project/data/processed/Food_Drive_2024_Processed.csv",   # Testing Data (Food Drive 2024)
-        models_dir="ml_project/models/"                                            # Save models to this directory
+        train_data_path="data/processed/Food_Drive_2023_Processed.csv",  # Training Data (Food Drive 2023)
+        test_data_path="data/processed/Food_Drive_2024_Processed.csv",   # Testing Data (Food Drive 2024)
+        models_dir="models/"                                            # Save models to this directory
     )
     trainer.train_pipeline()

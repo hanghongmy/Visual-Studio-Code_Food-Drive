@@ -9,7 +9,7 @@ import numpy as np
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Evaluator:
-    def __init__(self, test_data_path="ml_project/data/processed/Food_Drive_2024_Processed.csv", models_dir="ml_project/models/"):
+    def __init__(self, test_data_path="data/processed/Food_Drive_2024_Processed.csv", models_dir="models/"):
         """
         Initializes the Evaluator with paths to the test dataset and trained models.
         

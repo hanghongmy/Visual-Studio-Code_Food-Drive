@@ -3,9 +3,9 @@ import os
 import logging
 
 class Preprocessor:
-    def __init__(self, raw_data_path: str = 'ml_project/data/raw/Food Drive Data Collection 2024_original.csv',
-                 external_data_path: str = 'ml_project/data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv',
-                 processed_data_path: str = 'ml_project/data/processed/Food_Drive_Processed.csv'):
+    def __init__(self, raw_data_path: str = 'data/raw/Food Drive Data Collection 2024_original.csv',
+                 external_data_path: str = 'data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv',
+                 processed_data_path: str = 'data/processed/Food_Drive_Processed.csv'):
         """
         Initializes the Preprocessor with paths to raw and processed data.
 
@@ -195,6 +195,21 @@ class Preprocessor_2023:
         }
         self.df.rename(columns=rename_map, inplace=True)
         logging.info("Step 2: Columns renamed for 2023 dataset.")
+    
+    def merge_data(self):
+        if self.df is None or self.external_df is None:
+            logging.error("Data not loaded. Run load_data() and load_external_data() first.")
+            return
+        
+        # Merge datasets based on neighbourhood
+        self.df = pd.merge(self.df, self.external_df, on='neighbourhood', how='left')
+        
+        # Handle missing assessed values and coordinates
+        missing_count_before = self.df['assessed_value'].isna().sum()
+        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('stake')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
+        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('drop_off_location')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
+        missing_count_after = self.df['assessed_value'].isna().sum()
+        logging.info(f"Step 4: External data merged. Missing assessed values before: {missing_count_before}, after: {missing_count_after}")
 
     def save_processed_data(self):
         """Step 3: Save processed 2023 dataset."""
@@ -212,14 +227,14 @@ class Preprocessor_2023:
 # **Run Both Preprocessors**
 if __name__ == "__main__":
     preprocessor_2023 = Preprocessor_2023(
-        raw_data_path="ml_project/data/external/Food_Drive_2023.csv",
-        processed_data_path="ml_project/data/processed/Food_Drive_2023_Processed.csv"
+        raw_data_path="data/external/Food_Drive_2023.csv",
+        processed_data_path="data/processed/Food_Drive_2023_Processed.csv"
     )
     preprocessor_2023.preprocess()
 
     preprocessor_2024 = Preprocessor(
-        raw_data_path="ml_project/data/raw/Food Drive Data Collection 2024_original.csv",
-        external_data_path="ml_project/data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv",
-        processed_data_path="ml_project/data/processed/Food_Drive_2024_Processed.csv"
+        raw_data_path="data/raw/Food Drive Data Collection 2024_original.csv",
+        external_data_path="data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv",
+        processed_data_path="data/processed/Food_Drive_2024_Processed.csv"
     )
     preprocessor_2024.preprocess()
