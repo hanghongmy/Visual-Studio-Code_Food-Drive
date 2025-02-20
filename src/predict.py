@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Predictor:
-    def __init__(self, model_dir="ml_project/models/", test_data_path="ml_project/data/processed/Food_Drive_2024_Processed.csv"):
+    def __init__(self, model_dir="models/", test_data_path="data/processed/Food_Drive_2024_Processed.csv"):
         """
         Initializes the Predictor class.
 
@@ -63,7 +63,7 @@ class Predictor:
 
         logging.info("Step 3: Predictions made successfully (rounded to integers).")
 
-    def save_predictions(self, output_path="ml_project/data/predictions/Food_Drive_2024_Predictions.csv"):
+    def save_predictions(self, output_path="data/predictions/Food_Drive_2024_Predictions.csv"):
         """Step 4: Save predictions to a CSV file."""
         if self.df is None:
             logging.error("No predictions available to save. Run make_predictions() first.")

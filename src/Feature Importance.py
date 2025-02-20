@@ -9,7 +9,7 @@ import seaborn as sns
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class FeatureAnalysis:
-    def __init__(self, data_path="ml_project/data/processed/Food_Drive_2023_Processed.csv", model_path="ml_project/models/XGBoost.pkl", reports_dir="ml_project/reports/"):
+    def __init__(self, data_path="data/processed/Food_Drive_2023_Processed.csv", model_path="models/XGBoost.pkl", reports_dir="reports/"):
         """
         Initializes the Feature Analysis class with data path, model path, and output directory.
         """
