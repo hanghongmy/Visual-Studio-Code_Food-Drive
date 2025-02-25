@@ -2,17 +2,18 @@
 init-cpu:
 	@echo "Initializing CPU environment..."
 	python3 -m venv venv
-
 	@echo "Activating environment and installing dependencies..."
-	./venv/bin/pip install --upgrade pip
-	./venv/bin/pip install -r requirements.txt
-	./venv/bin/pip install pandas
+	./venv/bin/python -m pip install --upgrade pip
+	./venv/bin/python -m pip install -r requirements.txt
+	./venv/bin/python -m pip install pandas
 
 # Install DVC
 init-dvc:
 	@echo "Initializing DVC environment..."
+	./venv/bin/python -m pip install dvc
+	./venv/bin/python -m pip install dvc[gdrive]
 	./venv/bin/dvc init
-	./venv/bin/dvc remote add myremote gdrive://1p1SZiOeMQuPIRZnoTQM9YBORmsp5CjM9
+	./venv/bin/dvc remote add -d myremote gdrive://1p1SZiOeMQuPIRZnoTQM9YBORmsp5CjM9
 	./venv/bin/git add .dvc/config
 	./venv/bin/git commit -m "Setup DVC with Google Drive"
 	./venv/bin/dvc push
