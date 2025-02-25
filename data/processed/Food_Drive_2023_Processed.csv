@@ -18,19 +18,19 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:01,Londonderry Chapel,Bonnie Doon Stake,Londonderry Ward,2,2,12,30.0,0,2,12,30.26904762,LONDONDERRY,,837500.0,Bonnie Doon Stake 12
 2023-09-23 11:01,Londonderry Chapel,Bonnie Doon Stake,Londonderry Ward,2,0,30,45.0,1,2,194,60.0,LONDONDERRY,,837500.0,Bonnie Doon Stake 13
 2023-09-23 11:03,Londonderry Chapel,Bonnie Doon Stake,Londonderry Ward,2,0,16,25.0,0,2,98,25.0,LONDONDERRY,,837500.0,Bonnie Doon Stake 14
-2023-09-23 11:03,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,10,20.0,1,2,120,20.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 15
+2023-09-23 11:03,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,10,20.0,1,2,120,20.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 15
 2023-09-23 11:03,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,2,0,20,60.0,0,2,96,60.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 16
 2023-09-23 11:03,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,5,0,29,30.0,0,2,19,30.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 6
-2023-09-23 11:04,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,1,40,30.0,0,2,200,45.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 17
+2023-09-23 11:04,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,1,40,30.0,0,2,200,45.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 17
 2023-09-23 11:04,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,2,0,18,63.0,0,2,140,63.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 18
 2023-09-23 11:05,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,3,21,30.0,0,2,1,32.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 7
 2023-09-23 11:06,Bearspaw Chapel,Gateway Stake,Lee Ridge Ward,5,3,24,40.0,0,2,157,40.0,LEE RIDGE,Karhiio Ward,28618500.0,Gateway Stake 8
 2023-09-23 11:06,Bonnie Doon Stake Centre,Bonnie Doon Stake,Connors Hill Ward,2,3,40,180.0,1,2,375,60.0,CONNORS HILL,,837500.0,Bonnie Doon Stake 19
 2023-09-23 11:06,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,3,0,35,30.0,0,2,250,740.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 9
 2023-09-23 11:06,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,0,15,25.0,0,2,116,25.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 10
-2023-09-23 11:07,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,30,30.0,0,2,115,30.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 20
+2023-09-23 11:07,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,30,30.0,0,2,115,30.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 20
 2023-09-23 11:07,Londonderry Chapel,Bonnie Doon Stake,Clareview Ward,1,1,36,45.0,0,2,15,30.26904762,CLAREVIEW,,837500.0,Bonnie Doon Stake 21
-2023-09-23 11:09,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,15,30.0,0,2,90,38.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 22
+2023-09-23 11:09,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,15,30.0,0,2,90,38.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 22
 2023-09-23 11:09,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,1,21,45.0,0,2,206,45.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 1
 2023-09-23 11:09,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,3,21,32.0,0,2,202,32.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 11
 2023-09-23 11:09,North Stake Centre,Edmonton North Stake,Griesbach Ward,1,1,23,45.0,0,2,206,45.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 2
@@ -44,7 +44,7 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:12,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,2,24,30.0,0,2,20,30.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 4
 2023-09-23 11:13,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,0,26,45.0,0,2,150,40.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 13
 2023-09-23 11:14,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,3,0,24,35.0,0,2,194,40.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 14
-2023-09-23 11:14,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,3,3,30,60.0,1,2,100,73.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 27
+2023-09-23 11:14,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,3,3,30,60.0,1,2,100,73.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 27
 2023-09-23 11:14,Gateway Stake Centre,Gateway Stake,Ellerslie Ward,2,2,33,50.0,1,1,207,50.0,ELLERSLIE,Karhiio Ward,797500.0,Gateway Stake 15
 2023-09-23 11:14,Londonderry Chapel,Bonnie Doon Stake,Londonderry Ward,2,2,11,35.0,0,2,116,30.26904762,LONDONDERRY,,837500.0,Bonnie Doon Stake 28
 2023-09-23 11:15,Bearspaw Chapel,Gateway Stake,Blackmud Creek Ward,2,0,15,45.0,0,2,135,35.0,BLACKMUD CREEK,Ipiihkoohkanipiaohtsi Ward,503500.0,Gateway Stake 16
@@ -66,7 +66,7 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:24,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,0,31,58.0,0,2,27,57.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 24
 2023-09-23 11:24,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,4,0,26,50.0,0,2,168,50.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 25
 2023-09-23 11:24,North Stake Centre,Edmonton North Stake,Namao Ward,1,4,42,50.0,0,2,392,60.0,NAMAO,,6666500.0,Edmonton North Stake 9
-2023-09-23 11:25,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,18,120.0,0,2,100,56.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 31
+2023-09-23 11:25,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,18,120.0,0,2,100,56.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 31
 2023-09-23 11:25,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,3,21,50.0,1,2,317,50.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 26
 2023-09-23 11:25,Riverbend Stake Centre,Riverbend Stake,Greenfield Ward,3,0,54,75.0,0,2,212,80.0,GREENFIELD,papastew Ward,295500.0,Riverbend Stake 4
 2023-09-23 11:25,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,1,2,11,30.0,1,2,261,33.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 27
@@ -108,7 +108,7 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:35,North Stake Centre,Edmonton North Stake,Griesbach Ward,1,2,22,60.0,0,2,150,45.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 13
 2023-09-23 11:35,Bonnie Doon Stake Centre,Bonnie Doon Stake,Connors Hill Ward,3,1,40,60.0,0,2,160,44.0,CONNORS HILL,,837500.0,Bonnie Doon Stake 46
 2023-09-23 11:36,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,3,20,60.0,1,2,194,60.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 42
-2023-09-23 11:37,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,0,33,45.0,1,2,130,45.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 47
+2023-09-23 11:37,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,0,33,45.0,1,2,130,45.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 47
 2023-09-23 11:38,Riverbend Stake Centre,Riverbend Stake,Rutherford Ward,1,2,18,40.0,0,2,14,40.0,RUTHERFORD,Ipiihkoohkanipiaohtsi Ward,1154500.0,Riverbend Stake 9
 2023-09-23 11:38,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,0,17,40.0,0,2,170,40.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 43
 2023-09-23 11:38,Riverbend Stake Centre,Riverbend Stake,Rutherford Ward,2,1,12,15.0,0,2,12,40.0,RUTHERFORD,Ipiihkoohkanipiaohtsi Ward,1154500.0,Riverbend Stake 10
@@ -135,10 +135,10 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:45,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,2,15,60.0,0,2,106,50.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 18
 2023-09-23 11:45,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,2,2,35,75.0,1,2,144,74.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 51
 2023-09-23 11:45,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,1,11,60.0,1,2,11,60.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 53
-2023-09-23 11:45,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,16,40.0,0,2,125,40.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 52
+2023-09-23 11:45,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,16,40.0,0,2,125,40.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 52
 2023-09-23 11:45,Gateway Stake Centre,Gateway Stake,Lee Ridge Ward,1,2,32,35.0,0,2,173,35.0,LEE RIDGE,Karhiio Ward,28618500.0,Gateway Stake 54
 2023-09-23 11:45,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,0,18,55.0,0,2,90,55.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 19
-2023-09-23 11:46,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,4,32,45.0,0,2,200,73.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 53
+2023-09-23 11:46,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,4,32,45.0,0,2,200,73.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 53
 2023-09-23 11:46,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,3,0,18,45.0,0,2,143,45.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 54
 2023-09-23 11:47,Riverbend Stake Centre,Riverbend Stake,Terwillegar Park Ward,2,0,44,70.0,1,1,285,75.0,TERWILLEGAR PARK,,738854.8387,Riverbend Stake 15
 2023-09-23 11:47,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,3,30,60.0,1,2,23,75.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 55
@@ -154,13 +154,13 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:49,Bearspaw Chapel,Gateway Stake,Lee Ridge Ward,4,3,26,30.0,0,2,148,36.0,LEE RIDGE,Karhiio Ward,28618500.0,Gateway Stake 59
 2023-09-23 11:50,Riverbend Stake Centre,Riverbend Stake,Terwillegar Park Ward,1,1,24,90.0,0,2,170,90.0,TERWILLEGAR PARK,,738854.8387,Riverbend Stake 17
 2023-09-23 11:50,Riverbend Stake Centre,Riverbend Stake,Terwillegar Park Ward,2,0,70,90.0,1,1,312,108.0,TERWILLEGAR PARK,,738854.8387,Riverbend Stake 18
-2023-09-23 11:50,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,20,60.0,0,2,120,60.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 59
+2023-09-23 11:50,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,20,60.0,0,2,120,60.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 59
 2023-09-23 11:50,Gateway Stake Centre,Gateway Stake,Ellerslie Ward,1,0,26,40.0,1,3,191,36.0,ELLERSLIE,Karhiio Ward,797500.0,Gateway Stake 60
 2023-09-23 11:50,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,1,23,32.0,1,1,195,32.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 61
 2023-09-23 11:50,Londonderry Chapel,Bonnie Doon Stake,Clareview Ward,2,0,15,30.0,0,2,121,38.0,CLAREVIEW,,837500.0,Bonnie Doon Stake 60
 2023-09-23 11:50,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,3,13,15.0,0,2,115,30.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 62
 2023-09-23 11:51,Gateway Stake Centre,Gateway Stake,Ellerslie Ward,1,2,20,50.0,1,2,260,50.0,ELLERSLIE,Karhiio Ward,797500.0,Gateway Stake 63
-2023-09-23 11:51,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,1,18,45.0,0,2,125,36.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 61
+2023-09-23 11:51,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,1,18,45.0,0,2,125,36.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 61
 2023-09-23 11:51,Gateway Stake Centre,Gateway Stake,Lee Ridge Ward,2,1,36,40.0,0,2,145,44.0,LEE RIDGE,Karhiio Ward,28618500.0,Gateway Stake 64
 2023-09-23 11:52,Bearspaw Chapel,Bonnie Doon Stake,Southgate Ward,5,1,6,15.0,0,2,40,60.0,SOUTHGATE,,837500.0,Bonnie Doon Stake 62
 2023-09-23 11:52,Gateway Stake Centre,Gateway Stake,Ellerslie Ward,2,2,35,60.0,0,2,214,60.0,ELLERSLIE,Karhiio Ward,797500.0,Gateway Stake 65
@@ -169,14 +169,14 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:52,Riverbend Stake Centre,Riverbend Stake,Terwillegar Park Ward,3,1,19,40.0,0,2,150,50.0,TERWILLEGAR PARK,,738854.8387,Riverbend Stake 19
 2023-09-23 11:52,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,1,10,52.0,0,2,120,52.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 22
 2023-09-23 11:53,Riverbend Stake Centre,Riverbend Stake,Greenfield Ward,2,1,48,44.0,1,2,208,44.0,GREENFIELD,papastew Ward,295500.0,Riverbend Stake 20
-2023-09-23 11:53,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,4,0,42,60.0,1,2,194,96.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 63
+2023-09-23 11:53,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,4,0,42,60.0,1,2,194,96.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 63
 2023-09-23 11:53,Riverbend Stake Centre,Riverbend Stake,Woodbend Ward,1,2,40,30.0,0,2,220,30.0,WOODBEND,,738854.8387,Riverbend Stake 21
 2023-09-23 11:53,Londonderry Chapel,Bonnie Doon Stake,Londonderry Ward,1,1,30,60.0,0,2,100,30.26904762,LONDONDERRY,,837500.0,Bonnie Doon Stake 64
 2023-09-23 11:54,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,2,1,55,110.0,1,2,194,98.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 65
 2023-09-23 11:54,Bonnie Doon Stake Centre,Bonnie Doon Stake,Connors Hill Ward,1,1,40,150.0,1,2,180,95.0,CONNORS HILL,,837500.0,Bonnie Doon Stake 66
 2023-09-23 11:54,Riverbend Stake Centre,Riverbend Stake,Greenfield Ward,2,0,50,270.0,1,1,210,83.0,GREENFIELD,papastew Ward,295500.0,Riverbend Stake 22
 2023-09-23 11:55,Bearspaw Chapel,Gateway Stake,Blackmud Creek Ward,6,5,48,49.0,0,2,162,42.0,BLACKMUD CREEK,Ipiihkoohkanipiaohtsi Ward,503500.0,Gateway Stake 67
-2023-09-23 11:55,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,17,51.0,0,2,75,54.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 67
+2023-09-23 11:55,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,17,51.0,0,2,75,54.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 67
 2023-09-23 11:55,Riverbend Stake Centre,Riverbend Stake,Rutherford Ward,2,2,65,90.0,1,2,650,70.0,RUTHERFORD,Ipiihkoohkanipiaohtsi Ward,1154500.0,Riverbend Stake 23
 2023-09-23 11:56,Bearspaw Chapel,Gateway Stake,Blackmud Creek Ward,2,2,15,60.0,0,2,100,75.0,BLACKMUD CREEK,Ipiihkoohkanipiaohtsi Ward,503500.0,Gateway Stake 68
 2023-09-23 11:56,Gateway Stake Centre,Gateway Stake,Silver Berry Ward,2,3,31,50.0,0,2,180,50.0,SILVER BERRY,Sspomitapi Ward,162000.0,Gateway Stake 69
@@ -192,7 +192,7 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 11:58,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,2,3,50,90.0,1,3,460,90.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 72
 2023-09-23 11:58,Coronation Park Chapel,Bonnie Doon Stake,Coronation Park Ward,2,2,37,57.0,0,2,194,57.0,CORONATION PARK,,837500.0,Bonnie Doon Stake 73
 2023-09-23 11:58,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,0,23,30.0,0,2,20,30.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 23
-2023-09-23 11:58,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,28,57.0,1,2,200,57.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 74
+2023-09-23 11:58,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,3,28,57.0,1,2,200,57.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 74
 2023-09-23 11:59,North Stake Centre,Edmonton North Stake,Griesbach Ward,2,2,19,30.0,0,2,100,30.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 24
 2023-09-23 11:59,Riverbend Stake Centre,Riverbend Stake,Woodbend Ward,2,0,15,40.0,0,2,80,88.0,WOODBEND,,738854.8387,Riverbend Stake 26
 2023-09-23 11:59,Riverbend Stake Centre,Riverbend Stake,Greenfield Ward,2,3,27,60.0,0,2,21,60.0,GREENFIELD,papastew Ward,295500.0,Riverbend Stake 27
@@ -241,7 +241,7 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-23 12:08,Londonderry Chapel,Bonnie Doon Stake,Clareview Ward,1,4,40,60.0,1,2,400,30.26904762,CLAREVIEW,,837500.0,Bonnie Doon Stake 83
 2023-09-23 12:09,Bearspaw Chapel,Bonnie Doon Stake,Southgate Ward,4,0,8,45.0,0,2,194,60.0,SOUTHGATE,,837500.0,Bonnie Doon Stake 84
 2023-09-23 12:09,Gateway Stake Centre,Gateway Stake,Lee Ridge Ward,2,3,23,58.0,0,2,23,58.0,LEE RIDGE,Karhiio Ward,28618500.0,Gateway Stake 88
-2023-09-23 12:09,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,3,11,30.0,1,2,170,690.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 85
+2023-09-23 12:09,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,3,11,30.0,1,2,170,690.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 85
 2023-09-23 12:09,Gateway Stake Centre,Gateway Stake,Crawford Plains Ward,3,1,28,30.0,0,2,123,30.0,CRAWFORD PLAINS,Sspomitapi Ward,140000.0,Gateway Stake 89
 2023-09-23 12:09,Riverbend Stake Centre,Riverbend Stake,Terwillegar Park Ward,4,0,25,60.0,0,2,100,660.0,TERWILLEGAR PARK,,738854.8387,Riverbend Stake 40
 2023-09-23 12:10,North Stake Centre,Edmonton North Stake,Griesbach Ward,3,0,16,30.0,0,2,75,30.0,GRIESBACH,Anirniq Ward,6666500.0,Edmonton North Stake 31
@@ -434,14 +434,14 @@ collection_date,drop_off_location,stake,ward/stake,number_of_adult,number_of_you
 2023-09-24 23:04,Morinville,Edmonton North Stake,Namao Ward,2,8,0,105.0,1,2,525,100.0,NAMAO,,6666500.0,Edmonton North Stake 49
 2023-09-25 15:09,Parkland (Spruce Grove/Stony Plain),Edmonton North Stake,Stony Plain Ward,0,0,8,90.0,1,2,194,90.0,STONY PLAIN,,6666500.0,Edmonton North Stake 50
 2023-09-26 15:08,Bonnie Doon Stake Centre,Bonnie Doon Stake,Strathcona Married Student Ward,2,1,9,10.0,0,2,40,36.0,STRATHCONA MARRIED STUDENT,,837500.0,Bonnie Doon Stake 119
-2023-09-26 15:10,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,2,24,20.0,1,2,120,43.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 120
-2023-09-26 15:12,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,1,16,30.0,0,2,130,41.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 121
-2023-09-26 15:13,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,3,0,14,30.0,0,2,110,51.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 122
-2023-09-26 15:14,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,6,10.0,0,2,60,45.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 123
+2023-09-26 15:10,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,1,2,24,20.0,1,2,120,43.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 120
+2023-09-26 15:12,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,1,16,30.0,0,2,130,41.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 121
+2023-09-26 15:13,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,3,0,14,30.0,0,2,110,51.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 122
+2023-09-26 15:14,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,0,6,10.0,0,2,60,45.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 123
 2023-09-26 15:16,Bonnie Doon Stake Centre,Bonnie Doon Stake,Strathcona Married Student Ward,2,0,12,20.0,0,2,66,41.0,STRATHCONA MARRIED STUDENT,,837500.0,Bonnie Doon Stake 124
 2023-09-26 15:17,Bonnie Doon Stake Centre,Bonnie Doon Stake,Connors Hill Ward,1,0,7,25.0,0,2,100,35.0,CONNORS HILL,,837500.0,Bonnie Doon Stake 125
 2023-09-26 15:18,Bonnie Doon Stake Centre,Bonnie Doon Stake,Connors Hill Ward,3,0,28,90.0,0,2,65,65.0,CONNORS HILL,,837500.0,Bonnie Doon Stake 126
-2023-09-26 15:47,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,36,45.0,1,2,150,63.0,FOREST HEIGHTS,MÃ©tis Ward,837500.0,Bonnie Doon Stake 127
+2023-09-26 15:47,Bonnie Doon Stake Centre,Bonnie Doon Stake,Forest Heights Ward,2,2,36,45.0,1,2,150,63.0,FOREST HEIGHTS,MÃÂ©tis Ward,837500.0,Bonnie Doon Stake 127
 2023-09-26 19:46,Morinville,Edmonton North Stake,Namao Ward,1,3,80,240.0,1,2,420,240.0,NAMAO,,6666500.0,Edmonton North Stake 51
 2023-09-27 8:41,Onoway,Edmonton North Stake,Onoway Ward,2,0,10,45.0,0,2,194,45.0,ONOWAY,,6666500.0,Edmonton North Stake 52
 2023-09-27 14:24,North Stake Centre,Edmonton North Stake,Namao Ward,2,0,20,20.0,0,2,150,45.0,NAMAO,,6666500.0,Edmonton North Stake 53
