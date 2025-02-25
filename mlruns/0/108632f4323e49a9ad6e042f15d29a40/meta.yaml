@@ -1,0 +1,15 @@
+artifact_uri: file:///home/hhong/Visual-Studio-Code_Food-Drive/mlruns/0/108632f4323e49a9ad6e042f15d29a40/artifacts
+end_time: 1740515119303
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 108632f4323e49a9ad6e042f15d29a40
+run_name: Merge Data
+run_uuid: 108632f4323e49a9ad6e042f15d29a40
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740515119141
+status: 3
+tags: []
+user_id: hhong
