@@ -1,0 +1,15 @@
+artifact_uri: file:///home/hhong/Visual-Studio-Code_Food-Drive/mlruns/0/daf33f7f190a436283a53c4d0b8c3bd8/artifacts
+end_time: 1740515119135
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: daf33f7f190a436283a53c4d0b8c3bd8
+run_name: Clean Data
+run_uuid: daf33f7f190a436283a53c4d0b8c3bd8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740515119131
+status: 3
+tags: []
+user_id: hhong
