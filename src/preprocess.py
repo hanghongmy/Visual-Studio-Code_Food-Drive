@@ -178,6 +178,7 @@ class Preprocessor_2023:
             'routes_completed': 'routes_completed',
             'doors_in_route': 'doors_in_route',
             'neighbourhood': 'neighbourhood',
+            'Ward": "ward",'
             'assessed_value': 'assessed_value'
         }
         self.df.rename(columns=rename_map, inplace=True)
@@ -187,11 +188,18 @@ class Preprocessor_2023:
         self.df.to_csv(self.processed_data_path, index=False)
         logging.info(f"Processed data saved at {self.processed_data_path}.")
     
+    def drop_columns(self):
+        columns_to_remove = ['ward']
+        self.df.drop(columns=[col for col in columns_to_remove if col in self.df.columns], inplace=True)
+        logging.info("Uncessary columns removed for 2023 dataset.") 
+        
     def preprocess(self):
         self.load_data()
         self.rename_columns()
         self.save_processed_data()
-        logging.info("Preprocessing pipeline for 2023 dataset complete.")        
+        self.drop_columns()
+        logging.info("Preprocessing pipeline for 2023 dataset complete.")
+       
                          
 
 if __name__ == "__main__":
