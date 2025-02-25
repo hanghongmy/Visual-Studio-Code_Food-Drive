@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/home/hhong/Food Drive-2500/Visual-Studio-Code_Food-Drive/ml_project/Visual-Studio-Code_Food-Drive/venv/bin/python3" "$0" "$@"
-' '''
+#!/home/hhong/Visual-Studio-Code_Food-Drive/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

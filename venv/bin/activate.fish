@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV '/home/hhong/Food Drive-2500/Visual-Studio-Code_Food-Drive/ml_project/Visual-Studio-Code_Food-Drive/venv'
+set -gx VIRTUAL_ENV /home/hhong/Visual-Studio-Code_Food-Drive/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

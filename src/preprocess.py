@@ -1,11 +1,13 @@
 import pandas as pd
 import os
 import logging
+import subprocess
+import mlflow
+import argparse
+import yaml
 
 class Preprocessor:
-    def __init__(self, raw_data_path: str = 'data/raw/Food Drive Data Collection 2024_original.csv',
-                 external_data_path: str = 'data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv',
-                 processed_data_path: str = 'data/processed/Food_Drive_Processed.csv'):
+    def __init__(self, raw_data_path, external_data_path, processed_data_path):
         """
         Initializes the Preprocessor with paths to raw and processed data.
 
@@ -22,49 +24,35 @@ class Preprocessor:
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     def load_data(self):
-        """Step 1: Load raw data from a CSV file and clean column names."""
-        try:
-            logging.info(f"Looking for file at: {os.path.abspath(self.raw_data_path)}")
-            self.df = pd.read_csv(self.raw_data_path, encoding='utf-8')
-            logging.info(f"Step 1: Data loaded successfully from {self.raw_data_path}.")
+        """Step 1: Load raw data and external data"""
+        with mlflow.start_run(run_name="Load Data"):
+            try:
+                if not os.path.exists(self.raw_data_path):
+                    logging.error(f"Cannot find raw data file at {self.raw_data_path}")
+                    return
+                self.df = pd.read_csv(self.raw_data_path)
+                self.df.columns = self.df.columns.str.strip().str.lower().str.replace(' ', '_')
+                logging.info(f"Loaded raw data ({self.df.shape[0]} rows).")
+                mlflow.log_param("Raw Data Path", self.df.shape[0])
+                
+                if os.path.exists(self.external_data_path):
+                    self.external_df = pd.read_csv(self.external_data_path)
+                    self.external_df.columns = self.external_df.columns.str.strip().str.lower().str.replace(' ', '_')
+                    logging.info(f"Loaded external data from {self.external_df.shape[0]} rows.")
+                    mlflow.log_param("External Data Path", self.external_df.shape[0])
+                else:
+                    logging.error(f"Cannot find external data file at {self.external_data_path}")
+                    self.external_df = None
+            except Exception as e:
+                logging.error(f"Error in loading data: {e}")
+                raise
             
-            # Standardize column names
-            self.df.columns = self.df.columns.str.strip().str.lower().str.replace(' ', '_')
-            logging.info(f"Standardized column names: {self.df.columns.tolist()}")
-        except Exception as e:
-            logging.error(f"Error in loading data: {e}")
-            raise
-
-    def load_external_data(self):
-        """Step 2: Load external data with assessed value, latitude, longitude, and neighbourhood."""
-        try:
-            logging.info(f"Looking for external file at: {os.path.abspath(self.external_data_path)}")
-            
-            # Load with correct column names
-            self.external_df = pd.read_csv(self.external_data_path, usecols=['Assessed Value', 'Latitude', 'Longitude', 'Neighbourhood'], encoding='utf-8')
-            
-            # Standardize column names
-            self.external_df.columns = self.external_df.columns.str.strip().str.lower().str.replace(' ', '_')
-            
-            # Aggregate external data by neighbourhood to avoid duplication
-            self.external_df = self.external_df.groupby('neighbourhood', as_index=False).agg({
-                'assessed_value': 'median',  # Use median to avoid extreme values
-                'latitude': 'mean',  # Average latitude for merging
-                'longitude': 'mean'  # Average longitude for merging
-            })
-            
-            logging.info(f"Step 2: External data loaded and aggregated successfully from {self.external_data_path}.")
-            logging.info(f"Columns in external dataset after aggregation: {self.external_df.columns.tolist()}")
-        except Exception as e:
-            logging.error(f"Error in loading external data: {e}")
-            raise
 
     def clean_data(self):
-        """Step 3: Clean the dataset by handling missing values, removing duplicates, renaming columns, and dropping unnecessary columns."""
-        if self.df is None:
-            logging.error("Data not loaded. Run load_data() first.")
-            return
-
+        """Step 2: Clean the raw data."""
+        with mlflow.start_run(run_name="Clean Data"):
+            if self.df is None:
+                logging.error("Data not loaded. Cannot clean data.")
         # Remove duplicate rows
         self.df.drop_duplicates(inplace=True)
         logging.info("Step 2.1: Duplicates removed.")
@@ -101,8 +89,9 @@ class Preprocessor:
         
         if 'time_spent' in self.df.columns:
             self.df['time_spent'] = self.df['time_spent'].replace(time_mapping)
+            pd.set_option('future.no_silent_downcasting', True)  # Opt-in to future behavior
             self.df['time_spent'] = pd.to_numeric(self.df['time_spent'], errors='coerce')
-            self.df['time_spent'].fillna(self.df['time_spent'].median(), inplace=True)
+            self.df.fillna({'time_spent': self.df['time_spent'].median()}, inplace=True)
         logging.info("Step 2.3: 'Time Spent' column converted and missing values handled.")
     
         # Handle other missing values
@@ -118,67 +107,65 @@ class Preprocessor:
 
         
     def merge_data(self):
-        if self.df is None or self.external_df is None:
-            logging.error("Data not loaded. Run load_data() and load_external_data() first.")
-            return
-        
-        # Merge datasets based on neighbourhood
-        self.df = pd.merge(self.df, self.external_df, on='neighbourhood', how='left')
-        
-        # Handle missing assessed values and coordinates
-        missing_count_before = self.df['assessed_value'].isna().sum()
-        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('stake')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
-        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('drop_off_location')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
-        missing_count_after = self.df['assessed_value'].isna().sum()
-        logging.info(f"Step 4: External data merged. Missing assessed values before: {missing_count_before}, after: {missing_count_after}")
-        
+        """Step 3: Merge the raw data with external data."""
+        with mlflow.start_run(run_name="Merge Data"):
+            if self.df is None:
+                logging.error("Data not loaded. Cannot merge data.")
+                return
+            if self.external_df is not None:
+                self.df = self.df.merge(self.external_df, on='neighbourhood', how='left')
+                logging.info("Step 3: External data merged.")
+            else:
+                logging.warning("Skipping merge step as external data is missing.")
+     
     def save_processed_data(self):
-        """Step 5: Save the cleaned and processed dataset."""
-        if self.df is None:
-            logging.error("No data to save. Run preprocessing steps first.")
-            return
-        
-        try:
+        """Step 4: Save processed data and track with DVC."""
+        with mlflow.start_run(run_name="Save Processed Data"):
+            if self.df is None:
+                logging.error("No processed data available. Run preprocessing steps first.")
+                return
+
             os.makedirs(os.path.dirname(self.processed_data_path), exist_ok=True)
-            self.df.to_csv(self.processed_data_path, index=False, encoding='utf-8')
-            logging.info(f"Step 5: Processed data saved successfully at {self.processed_data_path}.")
-        except Exception as e:
-            logging.error(f"Error saving processed data: {e}")
+            self.df.to_csv(self.processed_data_path, index=False)
+            logging.info(f"Processed data saved at {self.processed_data_path}.")
+            mlflow.log_param("processed_data_rows", self.df.shape[0])
+
+            # Track processed data with DVC
+            try:
+                subprocess.run(["dvc", "add", self.processed_data_path], check=True)
+                subprocess.run(["git", "add", "."], check=True)
+                subprocess.run(["git", "commit", "-m", "Updated processed dataset"], check=True)
+                subprocess.run(["dvc", "push"], check=True)
+                logging.info("Processed data tracked and pushed with DVC.")
+            except Exception as e:
+                logging.error(f"DVC tracking failed: {e}")
 
     def preprocess(self):
         """Runs the full preprocessing pipeline step by step."""
         logging.info("Starting preprocessing pipeline...")
         self.load_data()
-        self.load_external_data()
         self.clean_data()
         self.merge_data()
         self.save_processed_data()
         logging.info("Preprocessing pipeline complete.")
-    
+
 class Preprocessor_2023:
-    def __init__(self, raw_data_path, processed_data_path):
-        """
-        Preprocessor for Food Drive 2023 dataset.
-        This class **only cleans the dataset** (no merging).
-        """
+    def __init__(self,raw_data_path, processed_data_path):
         self.raw_data_path = raw_data_path
         self.processed_data_path = processed_data_path
         self.df = None
 
+        # Configure logging
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
     def load_data(self):
-        """Step 1: Load raw Food Drive 2023 data."""
         try:
-            self.df = pd.read_csv(self.raw_data_path, encoding='utf-8')
+            self.df = pd.read_csv(self.raw_data_path,encoding='latin1')
             self.df.columns = self.df.columns.str.strip().str.lower().str.replace(' ', '_')
-            logging.info(f"Step 1: Data loaded from {self.raw_data_path}.")
+            logging.info(f"Data loaded from {self.raw_data_path}.")
         except Exception as e:
-            logging.error(f"Error loading data: {e}")
+            logging.error(f"Error in loading data: {e}")
             raise
-
     def rename_columns(self):
-        """Step 2: Rename columns for consistency."""
         rename_map = {
             'date': 'collection_date',
             'location': 'drop_off_location',
@@ -194,47 +181,35 @@ class Preprocessor_2023:
             'assessed_value': 'assessed_value'
         }
         self.df.rename(columns=rename_map, inplace=True)
-        logging.info("Step 2: Columns renamed for 2023 dataset.")
-    
-    def merge_data(self):
-        if self.df is None or self.external_df is None:
-            logging.error("Data not loaded. Run load_data() and load_external_data() first.")
-            return
-        
-        # Merge datasets based on neighbourhood
-        self.df = pd.merge(self.df, self.external_df, on='neighbourhood', how='left')
-        
-        # Handle missing assessed values and coordinates
-        missing_count_before = self.df['assessed_value'].isna().sum()
-        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('stake')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
-        self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('drop_off_location')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
-        missing_count_after = self.df['assessed_value'].isna().sum()
-        logging.info(f"Step 4: External data merged. Missing assessed values before: {missing_count_before}, after: {missing_count_after}")
-
+        logging.info("Columns renamed for 2023 dataset.")
     def save_processed_data(self):
-        """Step 3: Save processed 2023 dataset."""
-        self.df.to_csv(self.processed_data_path, index=False, encoding='utf-8')
-        logging.info(f"Step 3: Processed data saved at {self.processed_data_path}.")
-
+        os.makedirs(os.path.dirname(self.processed_data_path), exist_ok=True)
+        self.df.to_csv(self.processed_data_path, index=False)
+        logging.info(f"Processed data saved at {self.processed_data_path}.")
+    
     def preprocess(self):
-        """Run preprocessing pipeline."""
         self.load_data()
         self.rename_columns()
         self.save_processed_data()
-        logging.info("Preprocessing for 2023 complete.")
+        logging.info("Preprocessing pipeline for 2023 dataset complete.")        
+                         
 
-
-# **Run Both Preprocessors**
 if __name__ == "__main__":
+    logging.info("Starting preprocessing for both 2023 and 2024 datasets...")
+
+    # Process 2023 dataset (cleaning only)
     preprocessor_2023 = Preprocessor_2023(
         raw_data_path="data/external/Food_Drive_2023.csv",
         processed_data_path="data/processed/Food_Drive_2023_Processed.csv"
     )
     preprocessor_2023.preprocess()
 
+    # Process 2024 dataset (cleaning + merging with external data)
     preprocessor_2024 = Preprocessor(
-        raw_data_path="data/raw/Food Drive Data Collection 2024_original.csv",
+        raw_data_path="data/raw/Food_Drive_Data_Collection_2024_original.csv",
         external_data_path="data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv",
         processed_data_path="data/processed/Food_Drive_2024_Processed.csv"
     )
     preprocessor_2024.preprocess()
+
+    logging.info("Preprocessing for both 2023 and 2024 datasets completed successfully.")
