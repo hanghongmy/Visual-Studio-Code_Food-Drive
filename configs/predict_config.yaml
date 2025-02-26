@@ -14,10 +14,8 @@ param_grids:
     max_depth: [3, 5, 10]
 
 mlflow_experiment_name: "CMPT2500"
-test_data_path: "data/processed/Food_Drive_2024_Processed.csv"
-models_dir: "models/"
 reports_dir: "reports/"
-predictions_output: "data/predictions/Food_Drive_2024_Predictions.csv"
+predictions_output: "predictions/Food_Drive_2024_Predictions.csv"
 feature_importance: true
 feature_columns:
   - "time_spent"
@@ -26,4 +24,4 @@ feature_columns:
 
 target_column: "donation_bags_collected"
 
-mlflow_experiment_name: "CMPT2500dvc"
+mlflow_experiment_name: "CMPT2500"
