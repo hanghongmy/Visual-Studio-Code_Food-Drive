@@ -26,4 +26,4 @@ feature_columns:
 
 target_column: "donation_bags_collected"
 
-mlflow_experiment_name: "CMPT2500"
+mlflow_experiment_name: "CMPT2500dvc"
