@@ -7,9 +7,9 @@ import mlflow
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Preprocessor:
-    def __init__(self, raw_data_path, external_data_path, processed_data_path):
+    def __init__(self, raw_data_path, external_data_path_assessed, processed_data_path):
         self.raw_data_path = raw_data_path
-        self.external_data_path = external_data_path
+        self.external_data_path_assessed = external_data_path_assessed        
         self.processed_data_path = processed_data_path
         self.df = None
         self.external_df = None
@@ -23,8 +23,8 @@ class Preprocessor:
                 logging.info(f"Loaded raw data ({self.df.shape[0]} rows).")
                 mlflow.log_param("Raw Data Rows", self.df.shape[0])
 
-                if os.path.exists(self.external_data_path):
-                    self.external_df = pd.read_csv(self.external_data_path, encoding='utf-8')
+                if os.path.exists(self.external_data_path_assessed):
+                    self.external_df = pd.read_csv(self.external_data_path_assessed, encoding='utf-8')
                     self.external_df.columns = self.external_df.columns.str.strip().str.lower().str.replace(' ', '_')
                     logging.info(f"Loaded external data ({self.external_df.shape[0]} rows).")
                     mlflow.log_param("External Data Rows", self.external_df.shape[0])
@@ -133,16 +133,16 @@ class Preprocessor:
         logging.info("Preprocessing pipeline complete.")
 
 class Preprocessor_2023:
-    def __init__(self,raw_data_path, processed_data_path):
-        self.raw_data_path = raw_data_path
+    def __init__(self,external_data_path, processed_data_path):
+        self.external_data_path = external_data_path
         self.processed_data_path = processed_data_path
         self.df = None
 
     def load_data(self):
         try:
-            self.df = pd.read_csv(self.raw_data_path,encoding='latin1')
+            self.df = pd.read_csv(self.external_data_path,encoding='latin1')
             self.df.columns = self.df.columns.str.strip().str.lower().str.replace(' ', '_')
-            logging.info(f"Data loaded from {self.raw_data_path}.")
+            logging.info(f"Data loaded from {self.external_data_path}.")
         except Exception as e:
             logging.error(f"Error in loading data: {e}")
             raise
@@ -187,7 +187,7 @@ if __name__ == "__main__":
 
     # Process 2023 dataset (cleaning only)
     preprocessor_2023 = Preprocessor_2023(
-        raw_data_path="data/external/Food_Drive_2023.csv",
+        external_data_path="data/external/Food_Drive_2023.csv",
         processed_data_path="data/processed/Food_Drive_2023_Processed.csv"
     )
     preprocessor_2023.preprocess()
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     # Process 2024 dataset (cleaning + merging with external data)
     preprocessor_2024 = Preprocessor(
         raw_data_path="data/raw/Food_Drive_Data_Collection_2024_original.csv",
-        external_data_path="data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv",
+        external_data_path_assessed="data/external/Property_Assessment_Data__Current_Calendar_Year__20240925.csv",
         processed_data_path="data/processed/Food_Drive_2024_Processed.csv"
     )
     preprocessor_2024.preprocess()
