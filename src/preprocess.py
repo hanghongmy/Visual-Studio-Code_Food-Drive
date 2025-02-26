@@ -1,10 +1,7 @@
 import pandas as pd
 import os
 import logging
-import subprocess
 import mlflow
-import argparse
-import yaml
 
 class Preprocessor:
     def __init__(self, raw_data_path, external_data_path, processed_data_path):
@@ -24,27 +21,25 @@ class Preprocessor:
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     def load_data(self):
-        """Step 1: Load raw data and external data"""
+        """Step 1: Load raw data and external data with MLflow tracking."""
         with mlflow.start_run(run_name="Load Data"):
             try:
-                if not os.path.exists(self.raw_data_path):
-                    logging.error(f"Cannot find raw data file at {self.raw_data_path}")
-                    return
-                self.df = pd.read_csv(self.raw_data_path)
+                logging.info(f"Looking for file at: {os.path.abspath(self.raw_data_path)}")
+                self.df = pd.read_csv(self.raw_data_path, encoding='utf-8')
                 self.df.columns = self.df.columns.str.strip().str.lower().str.replace(' ', '_')
                 logging.info(f"Loaded raw data ({self.df.shape[0]} rows).")
-                mlflow.log_param("Raw Data Path", self.df.shape[0])
-                
+                mlflow.log_param("Raw Data Rows", self.df.shape[0])
+
                 if os.path.exists(self.external_data_path):
-                    self.external_df = pd.read_csv(self.external_data_path)
+                    self.external_df = pd.read_csv(self.external_data_path, encoding='utf-8')
                     self.external_df.columns = self.external_df.columns.str.strip().str.lower().str.replace(' ', '_')
-                    logging.info(f"Loaded external data from {self.external_df.shape[0]} rows.")
-                    mlflow.log_param("External Data Path", self.external_df.shape[0])
+                    logging.info(f"Loaded external data ({self.external_df.shape[0]} rows).")
+                    mlflow.log_param("External Data Rows", self.external_df.shape[0])
                 else:
-                    logging.error(f"Cannot find external data file at {self.external_data_path}")
+                    logging.warning(f"External data file not found at {self.external_data_path}")
                     self.external_df = None
             except Exception as e:
-                logging.error(f"Error in loading data: {e}")
+                logging.error(f"Error loading data: {e}")
                 raise
             
 
@@ -53,71 +48,76 @@ class Preprocessor:
         with mlflow.start_run(run_name="Clean Data"):
             if self.df is None:
                 logging.error("Data not loaded. Cannot clean data.")
-        # Remove duplicate rows
-        self.df.drop_duplicates(inplace=True)
-        logging.info("Step 2.1: Duplicates removed.")
+            # Remove duplicate rows
+            self.df.drop_duplicates(inplace=True)
+            logging.info("Step 2.1: Duplicates removed.")
 
-        # Rename important columns for consistency
-        rename_columns = {
-            '#_of_adult_volunteers_who_participated_in_this_route': 'number_of_adult',
-            '#_of_youth_volunteers_who_participated_in_this_route': 'number_of_youth',
-            'time_spent_collecting_donations': 'time_spent',
-            '#_of_doors_in_route': 'doors_in_route',
-            '#_of_donation_bags_collected': 'donation_bags_collected'
-        }
-        self.df.rename(columns=rename_columns, inplace=True)
+            # Rename important columns for consistency
+            rename_columns = {
+                '#_of_adult_volunteers_who_participated_in_this_route': 'number_of_adult',
+                '#_of_youth_volunteers_who_participated_in_this_route': 'number_of_youth',
+                'time_spent_collecting_donations': 'time_spent',
+                '#_of_doors_in_route': 'doors_in_route',
+                '#_of_donation_bags_collected': 'donation_bags_collected'
+            }
+            self.df.rename(columns=rename_columns, inplace=True)
         
-        # Drop unnecessary columns
-        columns_to_remove = [
-            'id', 'start_time', 'completion_time', 'email', 'name', 'how_did_you_receive_the_form?', 'email_addresses',
-             'other_drop-off_locations','how_many_routes_did_you_complete?', 'additional_routes_completed_(2_routes)', 
-             'route_number/name','additional_routes_completed_(3_routes)', 'additional_routes_completed_(3_routes)2', 
-             'additional_routes_completed_(more_than_3_routes)', 'additional_routes_completed_(more_than_3_routes)2', 
-             'additional_routes_completed_(more_than_3_routes)3', 'comments_or_feedback'
-        ]
-        self.df.drop(columns=[col for col in columns_to_remove if col in self.df.columns], inplace=True)
-        logging.info("Step: 2.2: Uncessary columns removed.")
+            # Drop unnecessary columns
+            columns_to_remove = [
+                'id', 'start_time', 'completion_time', 'email', 'name', 'how_did_you_receive_the_form?', 'email_addresses',
+                'other_drop-off_locations','how_many_routes_did_you_complete?', 'additional_routes_completed_(2_routes)', 
+                'route_number/name','additional_routes_completed_(3_routes)', 'additional_routes_completed_(3_routes)2', 
+                'additional_routes_completed_(more_than_3_routes)', 'additional_routes_completed_(more_than_3_routes)2', 
+                'additional_routes_completed_(more_than_3_routes)3', 'comments_or_feedback'
+            ]
+            self.df.drop(columns=[col for col in columns_to_remove if col in self.df.columns], inplace=True)
+            logging.info("Step: 2.2: Uncessary columns removed.")
         
 
-        # Convert categorical time spent to numeric
-        time_mapping = {
-            '0 - 30 Minutes': 15,
-            '30 - 60 Minutes': 45,
-            '1 Hour - 1.5 Hours': 90,
-            '2+ Hours': 150
-        }
-        
-        if 'time_spent' in self.df.columns:
-            self.df['time_spent'] = self.df['time_spent'].replace(time_mapping)
-            pd.set_option('future.no_silent_downcasting', True)  # Opt-in to future behavior
-            self.df['time_spent'] = pd.to_numeric(self.df['time_spent'], errors='coerce')
-            self.df.fillna({'time_spent': self.df['time_spent'].median()}, inplace=True)
-        logging.info("Step 2.3: 'Time Spent' column converted and missing values handled.")
-    
-        # Handle other missing values
-        self.df['doors_in_route'] = pd.to_numeric(self.df['doors_in_route'], errors='coerce').fillna(self.df['doors_in_route'].median())
-        self.df['donation_bags_collected'] = pd.to_numeric(self.df['donation_bags_collected'], errors='coerce').fillna(0)
-        logging.info("Step 2.4: Other missing values handled.")
-        
-        # Extract neighbourhood from Ward/Stake and standardize
-        if 'ward/stake' in self.df.columns:
-            self.df['neighbourhood'] = self.df['ward/stake'].apply(lambda x: x.split(' Ward')[0] if pd.notna(x) else x)
-            self.df['neighbourhood'] = self.df['neighbourhood'].str.upper()
-            logging.info("Step 3.3: Neighbourhood extracted and standardized.")
+            # Convert categorical time spent to numeric
+            time_mapping = {
+                '0 - 30 Minutes': '15',
+                '30 - 60 Minutes': '45',
+                '1 Hour - 1.5 Hours': '90',
+                '2+ Hours': '150'
+            }
+            
+            if 'time_spent' in self.df.columns:
+                self.df['time_spent'] = self.df['time_spent'].replace(time_mapping)
+                self.df['time_spent'] = pd.to_numeric(self.df['time_spent'], errors='coerce')
+                self.df['time_spent'] = self.df['time_spent'].fillna(self.df['time_spent'].median())
+            logging.info("Step 2.3: 'Time Spent' column converted and missing values handled.")
+            
+            # Handle other missing values
+            self.df['doors_in_route'] = self.df['doors_in_route'].fillna(self.df['doors_in_route'].median())
+            self.df['donation_bags_collected'] = self.df['donation_bags_collected'].fillna(0)
+
+            logging.info("Step 2.4: Other missing values handled.")
+            
+            # Extract neighbourhood from Ward/Stake and standardize
+            if 'ward/stake' in self.df.columns:
+                self.df['neighbourhood'] = self.df['ward/stake'].apply(lambda x: x.split(' Ward')[0] if pd.notna(x) else x)
+                self.df['neighbourhood'] = self.df['neighbourhood'].str.upper()
+                logging.info("Step 3.3: Neighbourhood extracted and standardized.")
 
         
     def merge_data(self):
         """Step 3: Merge the raw data with external data."""
         with mlflow.start_run(run_name="Merge Data"):
-            if self.df is None:
-                logging.error("Data not loaded. Cannot merge data.")
+            if self.df is None or self.external_df is None:
+                logging.warning("Data not loaded. Run load_data() and load_external_data() first.")
                 return
-            if self.external_df is not None:
-                self.df = self.df.merge(self.external_df, on='neighbourhood', how='left')
-                logging.info("Step 3: External data merged.")
-            else:
-                logging.warning("Skipping merge step as external data is missing.")
-     
+        
+            # Merge datasets based on neighbourhood
+            self.df = pd.merge(self.df, self.external_df, on='neighbourhood', how='left')
+            
+            # Handle missing assessed values and coordinates
+            missing_count_before = self.df['assessed_value'].isna().sum()
+            self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('stake')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
+            self.df[['assessed_value', 'latitude', 'longitude']] = self.df.groupby('drop_off_location')[['assessed_value', 'latitude', 'longitude']].transform(lambda x: x.fillna(x.mean()))
+            missing_count_after = self.df['assessed_value'].isna().sum()
+            logging.info(f"Step 4: External data merged. Missing assessed values before: {missing_count_before}, after: {missing_count_after}")
+        
     def save_processed_data(self):
         """Step 4: Save processed data and track with DVC."""
         with mlflow.start_run(run_name="Save Processed Data"):
@@ -130,15 +130,6 @@ class Preprocessor:
             logging.info(f"Processed data saved at {self.processed_data_path}.")
             mlflow.log_param("processed_data_rows", self.df.shape[0])
 
-            # Track processed data with DVC
-            try:
-                subprocess.run(["dvc", "add", self.processed_data_path], check=True)
-                subprocess.run(["git", "add", "."], check=True)
-                subprocess.run(["git", "commit", "-m", "Updated processed dataset"], check=True)
-                subprocess.run(["dvc", "push"], check=True)
-                logging.info("Processed data tracked and pushed with DVC.")
-            except Exception as e:
-                logging.error(f"DVC tracking failed: {e}")
 
     def preprocess(self):
         """Runs the full preprocessing pipeline step by step."""
@@ -178,7 +169,6 @@ class Preprocessor_2023:
             'routes_completed': 'routes_completed',
             'doors_in_route': 'doors_in_route',
             'neighbourhood': 'neighbourhood',
-            'Ward": "ward",'
             'assessed_value': 'assessed_value'
         }
         self.df.rename(columns=rename_map, inplace=True)
@@ -219,5 +209,5 @@ if __name__ == "__main__":
         processed_data_path="data/processed/Food_Drive_2024_Processed.csv"
     )
     preprocessor_2024.preprocess()
-
+    logging.basicConfig(level=logging.INFO)
     logging.info("Preprocessing for both 2023 and 2024 datasets completed successfully.")
