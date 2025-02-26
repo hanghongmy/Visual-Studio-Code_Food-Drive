@@ -2,6 +2,11 @@ import os
 import joblib
 import pandas as pd
 import logging
+import logging
+import mlflow
+import mlflow.sklearn
+import yaml
+import subprocess
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import numpy as np
 
@@ -9,18 +14,32 @@ import numpy as np
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Evaluator:
-    def __init__(self, test_data_path="data/processed/Food_Drive_2024_Processed.csv", models_dir="models/"):
+    def __init__(self, config_path="configs/predict_config.yaml"):
         """
         Initializes the Evaluator with paths to the test dataset and trained models.
         
         :param test_data_path: Path to the processed test data (Food Drive 2024)
         :param models_dir: Directory where trained models are stored
         """
-        self.test_data_path = test_data_path
-        self.models_dir = models_dir
-        self.df = None
-        self.models = {}
-        self.metrics = {}
+        with open(config_path, "r") as file:
+            self.config = yaml.safe_load(file)
+
+            self.test_data_path = self.config["test_data_path"]
+            self.models_dir = self.config["models_dir"]
+            self.df = None
+            self.models = {}
+            self.metrics = {}
+            
+        # Set up mlflow experiment
+        mlflow.set_experiment(self.config["mlflow_experiment_name"])
+    def pull_data_with_dvc(self):
+        logging.info("Pulling data from DVC...")
+        try:
+            subprocess.run(["dvc", "pull"], self.test_data_path)
+            logging.info("Data pulled successfully.")
+        except Exception as e:
+            logging.error(f"Error pulling data from DVC: {e}")
+            raise
 
     def load_data(self):
         """Step 1: Load the processed test dataset."""
