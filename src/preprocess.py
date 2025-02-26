@@ -3,25 +3,18 @@ import os
 import logging
 import mlflow
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 class Preprocessor:
     def __init__(self, raw_data_path, external_data_path, processed_data_path):
-        """
-        Initializes the Preprocessor with paths to raw and processed data.
-
-        :param raw_data_path: Path to the raw data file.
-        :param processed_data_path: Path to save the processed data.
-        """
         self.raw_data_path = raw_data_path
         self.external_data_path = external_data_path
         self.processed_data_path = processed_data_path
         self.df = None
         self.external_df = None
 
-        # Configure logging
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
     def load_data(self):
-        """Step 1: Load raw data and external data with MLflow tracking."""
         with mlflow.start_run(run_name="Load Data"):
             try:
                 logging.info(f"Looking for file at: {os.path.abspath(self.raw_data_path)}")
@@ -44,13 +37,12 @@ class Preprocessor:
             
 
     def clean_data(self):
-        """Step 2: Clean the raw data."""
         with mlflow.start_run(run_name="Clean Data"):
             if self.df is None:
                 logging.error("Data not loaded. Cannot clean data.")
-            # Remove duplicate rows
+                return
             self.df.drop_duplicates(inplace=True)
-            logging.info("Step 2.1: Duplicates removed.")
+            logging.info("Duplicates removed.")
 
             # Rename important columns for consistency
             rename_columns = {
@@ -71,7 +63,7 @@ class Preprocessor:
                 'additional_routes_completed_(more_than_3_routes)3', 'comments_or_feedback'
             ]
             self.df.drop(columns=[col for col in columns_to_remove if col in self.df.columns], inplace=True)
-            logging.info("Step: 2.2: Uncessary columns removed.")
+            logging.info("Uncessary columns removed.")
         
 
             # Convert categorical time spent to numeric
@@ -86,13 +78,13 @@ class Preprocessor:
                 self.df['time_spent'] = self.df['time_spent'].replace(time_mapping)
                 self.df['time_spent'] = pd.to_numeric(self.df['time_spent'], errors='coerce')
                 self.df['time_spent'] = self.df['time_spent'].fillna(self.df['time_spent'].median())
-            logging.info("Step 2.3: 'Time Spent' column converted and missing values handled.")
+            logging.info("'Time Spent' column converted and missing values handled.")
             
             # Handle other missing values
             self.df['doors_in_route'] = self.df['doors_in_route'].fillna(self.df['doors_in_route'].median())
             self.df['donation_bags_collected'] = self.df['donation_bags_collected'].fillna(0)
 
-            logging.info("Step 2.4: Other missing values handled.")
+            logging.info("Other missing values handled.")
             
             # Extract neighbourhood from Ward/Stake and standardize
             if 'ward/stake' in self.df.columns:
@@ -102,7 +94,7 @@ class Preprocessor:
 
         
     def merge_data(self):
-        """Step 3: Merge the raw data with external data."""
+        """Merge the raw data with external data."""
         with mlflow.start_run(run_name="Merge Data"):
             if self.df is None or self.external_df is None:
                 logging.warning("Data not loaded. Run load_data() and load_external_data() first.")
@@ -119,7 +111,7 @@ class Preprocessor:
             logging.info(f"Step 4: External data merged. Missing assessed values before: {missing_count_before}, after: {missing_count_after}")
         
     def save_processed_data(self):
-        """Step 4: Save processed data and track with DVC."""
+        """Save processed data and track with DVC."""
         with mlflow.start_run(run_name="Save Processed Data"):
             if self.df is None:
                 logging.error("No processed data available. Run preprocessing steps first.")
@@ -146,8 +138,6 @@ class Preprocessor_2023:
         self.processed_data_path = processed_data_path
         self.df = None
 
-        # Configure logging
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     def load_data(self):
         try:
             self.df = pd.read_csv(self.raw_data_path,encoding='latin1')
@@ -209,5 +199,5 @@ if __name__ == "__main__":
         processed_data_path="data/processed/Food_Drive_2024_Processed.csv"
     )
     preprocessor_2024.preprocess()
-    logging.basicConfig(level=logging.INFO)
+    
     logging.info("Preprocessing for both 2023 and 2024 datasets completed successfully.")

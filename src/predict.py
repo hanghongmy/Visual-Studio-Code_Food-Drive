@@ -2,22 +2,35 @@ import os
 import joblib
 import pandas as pd
 import logging
+import yaml
+import mlflow
+import mlflow.sklearn
+import subprocess
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Predictor:
-    def __init__(self, model_dir="models/", test_data_path="data/processed/Food_Drive_2024_Processed.csv"):
+    def __init__(self, config_path="configs/predict_config.yaml"):
         """
         Initializes the Predictor class.
 
         :param model_dir: Directory where trained models are stored.
         :param test_data_path: Path to the processed test dataset.
         """
-        self.model_dir = model_dir
-        self.test_data_path = test_data_path
+        with open(config_path, "r") as file:
+            self.config = yaml.safe_load(file)
+            
+        self.model_dir = self.config["models_dir"]
+        self.test_data_path = self.config["test_data_path"]
+        self.output_path = self.config["predictions_output"]       
+        self.mlflow_experiment_name = self.config["mlflow_experiment_name"]
         self.model = None
-        self.df = None
+        self.df = None          
+        # Set up mlflow experiment
+        mlflow.set_experiment(self.mlflow_experiment_name)
 
     def load_best_model(self):
         """Step 1: Load the best trained model from the models directory."""
@@ -70,12 +83,28 @@ class Predictor:
             return
 
         try:
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            self.df.to_csv(output_path, index=False, encoding='utf-8')
+            os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
+            self.df.to_csv(self.output_path, index=False, encoding='utf-8')
             logging.info(f"Step 4: Predictions saved to {output_path}.")
+            
+            # Log predictions to mlflow
+            with mlflow.start_run():
+                mlflow.log_artifact(self.output_path)
+                logging.info("Predictions logged to mlflow.")
         except Exception as e:
             logging.error(f"Error saving predictions: {e}")
-
+            
+    def track_predictions_with_dvc(self):
+        """Track predictions file with DVC."""
+        try:
+            subprocess.run(["dvc", "add", self.output_path], check=True)
+            subprocess.run(["git", "add", self.output_path + ".dvc"], check=True)
+            subprocess.run(["git", "commit", "-m", "Tracked predictions with DVC"], check=True)
+            subprocess.run(["dvc", "push"], check=True)
+            logging.info("Predictions successfully tracked and pushed to DVC.")
+        except Exception as e:
+            logging.error(f"DVC tracking failed: {e}")
+            
     def predict_pipeline(self):
         """Runs the full prediction pipeline step by step."""
         logging.info("Starting prediction pipeline...")
