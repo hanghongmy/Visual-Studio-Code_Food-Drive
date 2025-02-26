@@ -157,7 +157,7 @@ class Trainer:
         except subprocess.CalledProcessError as e:
             logging.error(f"DVC tracking failed: {e}")
         except FileNotFoundError:
-            logging.error("DVC is not installed. Please install DVC to track data.")
+            logging.error("DVC is not installed. Please install DVC to track data. Using make init-dvc to install")
 
     def train_pipeline(self):
         """Run the full training pipeline."""
