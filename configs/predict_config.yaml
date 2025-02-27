@@ -1,3 +1,6 @@
+raw_data_path: "Food_Drive_Data_Collection_2024_original.csv"
+external_data_path: "Food_Drive_2023.csv"
+external_data_path_assessed: "Property_Assessment_Data__Current_Calendar_Year__20240925.csv"
 train_data_path: "Food_Drive_2023_Processed.csv"
 test_data_path: "Food_Drive_2024_Processed.csv"
 models_dir: "models/"
