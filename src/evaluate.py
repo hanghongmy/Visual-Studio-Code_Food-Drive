@@ -24,7 +24,7 @@ class Evaluator:
         with open(config_path, "r") as file:
             self.config = yaml.safe_load(file)
 
-            self.test_data_path = self.config["test_data_path"]
+            self.test_data_path = os.path.join("data", "processed", self.config["test_data_path"])
             self.models_dir = self.config["models_dir"]
             self.df = None
             self.models = {}
