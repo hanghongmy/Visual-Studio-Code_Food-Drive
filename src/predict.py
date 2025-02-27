@@ -24,7 +24,7 @@ class Predictor:
             self.config = yaml.safe_load(file)
             
         self.model_dir = self.config["models_dir"]
-        self.test_data_path = self.config["test_data_path"]
+        self.test_data_path = os.path.join("data", "processed", self.config["test_data_path"])
         self.output_path = self.config["predictions_output"]       
         self.mlflow_experiment_name = self.config["mlflow_experiment_name"]
         self.model = None
