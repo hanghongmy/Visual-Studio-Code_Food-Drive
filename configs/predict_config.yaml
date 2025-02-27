@@ -26,5 +26,3 @@ feature_columns:
   - "assessed_value"
 
 target_column: "donation_bags_collected"
-
-mlflow_experiment_name: "CMPT2500"
