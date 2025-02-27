@@ -158,3 +158,4 @@ class FeatureAnalysis:
 if __name__ == "__main__":
     analyzer = FeatureAnalysis()
     analyzer.run_analysis()
+    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
