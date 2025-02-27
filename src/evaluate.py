@@ -2,7 +2,6 @@ import os
 import joblib
 import pandas as pd
 import logging
-import logging
 import mlflow
 import mlflow.sklearn
 import yaml
@@ -32,10 +31,11 @@ class Evaluator:
             
         # Set up mlflow experiment
         mlflow.set_experiment(self.config["mlflow_experiment_name"])
+
     def pull_data_with_dvc(self):
         logging.info("Pulling data from DVC...")
         try:
-            subprocess.run(["dvc", "pull"], self.test_data_path)
+            subprocess.run(["dvc", "pull"], check=True)
             logging.info("Data pulled successfully.")
         except Exception as e:
             logging.error(f"Error pulling data from DVC: {e}")
@@ -94,13 +94,20 @@ class Evaluator:
 
         # Evaluate each model
         for model_name, model in self.models.items():
-            y_pred = model.predict(X_test)
-            mse = mean_squared_error(y_test, y_pred)
-            rmse = np.sqrt(mse)
-            mae = mean_absolute_error(y_test, y_pred)
-            r2 = r2_score(y_test, y_pred)
+            with mlflow.start_run(run_name=model_name):
+                y_pred = model.predict(X_test)
+                mse = mean_squared_error(y_test, y_pred)
+                rmse = np.sqrt(mse)
+                mae = mean_absolute_error(y_test, y_pred)
+                r2 = r2_score(y_test, y_pred)
 
-            self.metrics[model_name] = {"MSE": mse, "RMSE": rmse, "MAE": mae, "R² Score": r2}
+                self.metrics[model_name] = {"MSE": mse, "RMSE": rmse, "MAE": mae, "R² Score": r2}
+
+                # Log metrics to MLflow
+                mlflow.log_metric("MSE", mse)
+                mlflow.log_metric("RMSE", rmse)
+                mlflow.log_metric("MAE", mae)
+                mlflow.log_metric("R² Score", r2)
         
         logging.info("Step 3: Model evaluation complete.")
 
@@ -142,3 +149,5 @@ class Evaluator:
 if __name__ == "__main__":
     evaluator = Evaluator()
     evaluator.evaluate_pipeline()
+    # Start the MLflow server
+    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
