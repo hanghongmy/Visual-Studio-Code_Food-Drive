@@ -24,7 +24,7 @@ class FeatureAnalysis:
             self.config = yaml.safe_load(file)
 
         # Set paths from config
-        self.data_path = self.config["test_data_path"]
+        self.data_path = os.path.join("data", "processed", self.config["test_data_path"])  # Test data path
         self.model_path = os.path.join(self.config["models_dir"], "best_model.pkl")  # Best model path
         self.reports_dir = self.config["reports_dir"]
         self.feature_columns = self.config["feature_columns"]
