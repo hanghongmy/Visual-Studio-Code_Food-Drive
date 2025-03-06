@@ -1,4 +1,8 @@
 [core]
-    remote = gdrive_remote
-['remote "gdrive_remote"']
-    url = gdrive://
+    remote = myremote
+    autostage = true
+['remote "myremote"']
+    url = gdrive://1HQXw4F8dZ9U7EMPZm9o6FRmSZ1fQou72
+    gdrive_use_service_account = true
+    gdrive_service_account_json_file_path = /home/hhong/.ssh/service-account-key.json
+    gdrive_service_account_user_email = your_user_hanghongmy1506@gmail.com
