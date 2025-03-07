@@ -13,7 +13,7 @@ init-dvc:
 	./venv/bin/python -m pip install dvc
 	./venv/bin/python -m pip install dvc[gdrive]
 	./venv/bin/dvc init
-	./venv/bin/dvc remote add -d myremote gdrive://1p1SZiOeMQuPIRZnoTQM9YBORmsp5CjM9
+	./venv/bin/dvc remote add -d food_drive_remote gdrive://1Dvx4vAez5Hei3PZiHimU7p6ig4oHirIC?lfhs=2
 	./venv/bin/git add .dvc/config
 	./venv/bin/git commit -m "Setup DVC with Google Drive"
 	./venv/bin/dvc push
