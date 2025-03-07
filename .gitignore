@@ -4,3 +4,7 @@ dvc-gdrive==3.0.1
 mlflow==2.20.2
 venv/
 configs/cmpt2500-452908-5222545ddece.json
+configs/cmpt2500-e67e1347268a.json
+configs/gdrive-key.json
+.dvc/config
+data/predictions/Food_Drive_2024_Predictions.csv
