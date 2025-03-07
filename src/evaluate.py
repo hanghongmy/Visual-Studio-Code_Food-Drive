@@ -150,4 +150,4 @@ if __name__ == "__main__":
     evaluator = Evaluator()
     evaluator.evaluate_pipeline()
     # Start the MLflow server
-    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "6002"])
