@@ -202,4 +202,4 @@ if __name__ == "__main__":
     preprocessor_2024.preprocess()
     
     logging.info("Preprocessing for both 2023 and 2024 datasets completed successfully.")
-    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])

@@ -4,3 +4,5 @@ dvc-gdrive==3.0.1
 mlflow==2.20.2
 venv/
 /.vscode
+/.dvc
+.dvc/config
