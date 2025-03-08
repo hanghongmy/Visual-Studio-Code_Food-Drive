@@ -5,7 +5,7 @@ train_data_path: "Food_Drive_2023_Processed.csv"
 test_data_path: "Food_Drive_2024_Processed.csv"
 models_dir: "models/"
 model_v1_path: "models/best_model.pkl"
-model_v2_path: "models/Linear_Regression.pkl"
+model_v2_path: "models/Random_Forest_Tuned.pkl"
 
 
 random_forest:
