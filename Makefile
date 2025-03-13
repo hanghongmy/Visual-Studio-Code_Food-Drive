@@ -42,3 +42,8 @@ predict:
 mlflow-ui:
 	@echo "Launching MLflow UI..."
 	./venv/bin/mlflow ui --host 0.0.0.0 --port 5000
+
+# Run MLflow server
+mlflow-server:
+    @echo "Launching MLflow server..."
+    ./venv/bin/mlflow server --host 127.0.0.1 --port 5000
