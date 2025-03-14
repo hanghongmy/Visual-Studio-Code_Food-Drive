@@ -1,19 +1,19 @@
-Overview
+# Overview
 This project aims to analyze and predict donation bag collections based on historical Food Drive data from 2023 and 2024. Using various regression models, we identify trends, optimize predictions, and improve data-driven decision-making for future donation drives.
 
-Key Features:
-
+# Key Features:
 - Data Cleaning & Preprocessing using Pandas
 - Feature Engineering for enhanced predictions
-- Multiple Regression Models (Linear, Decision Tree, Random Forest, XGBoost)
+- Multiple Regression Models (Linear Regression, Decision Tree, Random Forest)
 - Hyperparameter Tuning for optimal performance
 - Model Evaluation & Selection based on R² Score
 - Final Prediction Using the Best Model
+- API for prediction using Flask
 
-Project Structure:
+# Project Structure:
 
 
-Food Drive-2500/
+VISUAL-STUDIO-CODE_FOOD-DRIVE/
 
 │── ml_project/
 
@@ -39,9 +39,15 @@ Food Drive-2500/
 
 |   |   ├── feature_analysis.py# 
 
+|   |   |── predict_api.py     # Flask API for Predictions
+
 │   │   ├── predict.py         # Making Predictions using Best Model
 
+│── API_DOCUMENTATION.md       # Overview and process how to run the Flask prediction
+
 │── README.md                  # Project Documentation
+
+│── Makefile                   
 
 │── requirements.txt           # Dependencies & Libraries
 
