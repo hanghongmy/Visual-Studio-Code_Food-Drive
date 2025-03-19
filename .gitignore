@@ -6,3 +6,5 @@ venv/
 /.vscode
 /.dvc
 .dvc/config
+# Ignore MLflow artifacts
+mlruns/
