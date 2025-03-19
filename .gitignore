@@ -8,3 +8,6 @@ venv/
 .dvc/config
 # Ignore MLflow artifacts
 mlruns/
+
+# Ignore configs folder
+configs/
