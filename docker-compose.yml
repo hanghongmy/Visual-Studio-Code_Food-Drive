@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  ml-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlapp
+    ports:
+      - "5000:5000"
+    networks:
+      - ml-network
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    ports:
+      - "5001:5000"
+    networks:
+      - ml-network
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+
+networks:
+  ml-network:
+    driver: bridge

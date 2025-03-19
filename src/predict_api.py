@@ -6,8 +6,20 @@ import yaml
 from flask import Flask, request, jsonify
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+log_dir = os.environ.get("LOG_DIR", "logs")
+os.makedirs(log_dir, exist_ok=True)
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(os.path.join(log_dir, "predict_api.log")),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("ml_app.api") 
+
+# Initialize Flask app
 app = Flask(__name__)
 
 # Load configuration
