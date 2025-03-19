@@ -37,7 +37,7 @@ VISUAL-STUDIO-CODE_FOOD-DRIVE/
 
 │   │   ├── evaluate.py        # Model Evaluation & Best Model Selection
 
-|   |   ├── feature_analysis.py# 
+|   |   ├── feature_importance.py# 
 
 |   |   |── predict_api.py     # Flask API for Predictions
 
@@ -50,6 +50,14 @@ VISUAL-STUDIO-CODE_FOOD-DRIVE/
 │── Makefile                   
 
 │── requirements.txt           # Dependencies & Libraries
+
+│── Dockerfile.mlapp           # Dockerfile for ML Application
+
+│── Dockerfile.mlflow          # Dockerfile for MLFlow Server
+
+│── Docker-compose.yml          # Docker Compose file for Multi-Container Setup
+
+
 
 Dataset:
 - Food_Drive_2023.csv: Historical donation data used for training

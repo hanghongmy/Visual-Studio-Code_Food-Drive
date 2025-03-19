@@ -12,6 +12,16 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
+# Set the MLflow tracking URI to the mlflow service in the Docker Compose network
+mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://mlflow:5000")
+mlflow.set_tracking_uri(mlflow_tracking_uri)
+
+# Example: Start an MLflow experiment
+mlflow.set_experiment("Food Drive Experiment")
+with mlflow.start_run(run_name="Linear_Regression"):
+    mlflow.log_param("param1", 42)
+    mlflow.log_metric("metric1", 0.95)
+
 class Trainer:
     def __init__(self, config_path: str):
         """
@@ -25,8 +35,8 @@ class Trainer:
         with open(config_path, "r") as path:
             self.config = yaml.safe_load(path)
 
-        self.train_data_path = os.path.join("data","processed", self.config["train_data_path"])
-        self.test_data_path = os.path.join("data","processed", self.config["test_data_path"])   
+        self.train_data_path = os.path.join("data","processed", self.config.get("train_data_path"))
+        self.test_data_path = os.path.join("data","processed", self.config.get("test_data_path"))   
 
         self.models_dir = self.config["models_dir"]
         self.train_df = None

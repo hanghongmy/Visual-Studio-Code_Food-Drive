@@ -1,0 +1,18 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /mlflow
+
+# Install MLflow and additional dependencies
+RUN pip install --no-cache-dir mlflow pymysql
+
+# Copy necessary files (if any)
+# For example, if you have an MLflow configuration file, copy it here
+# COPY mlflow_config/ /mlflow/
+
+# Expose the default MLflow UI port
+EXPOSE 5000
+
+# Command to run MLflow server
+CMD ["mlflow", "server", "--host", "0.0.0.0", "--port", "5000"]
