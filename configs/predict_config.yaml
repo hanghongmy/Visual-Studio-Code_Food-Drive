@@ -20,6 +20,7 @@ param_grids:
     max_depth: [3, 5, 10]
 
 mlflow_experiment_name: "cmpt2500-452908"
+mlflow_tracking_uri: "http://mlflow:5000"
 reports_dir: "reports/"
 predictions_output: "predictions/Food_Drive_2024_Predictions.csv"
 feature_importance: true
@@ -29,3 +30,4 @@ feature_columns:
   - "assessed_value"
 
 target_column: "donation_bags_collected"
+feature_importance: true

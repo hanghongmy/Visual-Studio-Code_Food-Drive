@@ -1,0 +1,27 @@
+# Base Image
+FROM python:3.10-slim
+
+# Working Directory
+WORKDIR /app
+
+# Install the requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source code, models, configs, etc.
+COPY . .
+
+# Create a logs directory in the container
+RUN mkdir -p /app/logs
+
+# Set an environment variable to define log path
+ENV LOG_DIR=/app/logs
+
+ENV PYTHONPATH=/app
+ENV FLASK_APP=predict_api.py
+
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
+
+CMD ["python", "src/predict_api.py"]

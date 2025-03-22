@@ -1,0 +1,11 @@
+mlruns/
+venv/
+data/
+__pycache__/
+.gitingore
+.gitattributes/
+Makefile
+Dockerfile.mlapp
+.git/
+gdrive-key.json
+models/

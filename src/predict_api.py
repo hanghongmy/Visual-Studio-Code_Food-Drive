@@ -6,7 +6,19 @@ import yaml
 from flask import Flask, request, jsonify
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+# Configure logging
+log_dir = os.environ.get("LOG_DIR", "logs")
+os.makedirs(log_dir, exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(os.path.join(log_dir, "predict_api.log")),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("ml_app.api") 
 
 app = Flask(__name__)
 
@@ -82,4 +94,4 @@ def predict_v2():
         return jsonify({"error": "Prediction failed"}), 500
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=6004, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

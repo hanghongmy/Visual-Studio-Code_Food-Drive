@@ -5,3 +5,4 @@ mlflow==2.20.2
 venv/
 /home/kiranpreet/Visual-Studio-Code_Food-Drive/gdrive-key.json
 .dvc/config
+configs/
