@@ -16,25 +16,49 @@ This project aims to analyze and predict donation bag collections based on histo
 VISUAL-STUDIO-CODE_FOOD-DRIVE/
 
 │── ml_project/
-│   ├── data/                  # Data Directory
-│   │   ├── raw/               # Raw CSV Files (Unprocessed)
-│   │   ├── external/          # External Datasets (Property Assessment)
-│   │   ├── processed/         # Cleaned & Processed Datasets
-│   ├── models/                # Saved Machine Learning Models
-│   ├── reports                # Saved Feature Importance & Heatmap
-│   ├── src/                   # Source Code for ML Pipeline
-│   │   ├── preprocess.py      # Data Preprocessing & Cleaning
-│   │   ├── train.py           # Model Training & Saving
-│   │   ├── evaluate.py        # Model Evaluation & Best Model Selection
-|   |   |── predict_api.py     # Flask API for Predictions
-│   │   ├── predict.py         # Making Predictions using Best Model
-│── API_DOCUMENTATION.md       # Overview and process how to run the Flask prediction
-│── README.md                  # Project Documentation
-│── Makefile                   
-│── requirements.txt           # Dependencies & Libraries
-│── Dockerfile.mlapp           # Dockerfile for ML Application
-│── Dockerfile.mlflow          # Dockerfile for MLFlow Server
+
+│   ├── data/                   # Data Directory
+
+│   │   ├── raw/                # Raw CSV Files (Unprocessed)
+
+│   │   ├── external/           # External Datasets (Property Assessment)
+
+│   │   ├── processed/          # Cleaned & Processed Datasets
+
+│   ├── models/                 # Saved Machine Learning Models
+
+│   ├── reports                 # Saved Feature Importance & Heatmap
+
+│   ├── src/                    # Source Code for ML Pipeline
+
+│   │   ├── preprocess.py       # Data Preprocessing & Cleaning
+
+│   │   ├── train.py            # Model Training & Saving
+
+│   │   ├── evaluate.py         # Model Evaluation & Best Model Selection
+
+|   |   |── predict_api.py      # Flask API for Predictions
+
+│   │   ├── predict.py          # Making Predictions using Best Model
+
+│   │   ├── logging_config.py   # Logging config
+
+│── API_DOCUMENTATION.md        # Overview and process how to run the Flask prediction
+
+│── README.md                   # Project Documentation
+
+│── Makefile
+
+│── requirements.txt            # Dependencies & Libraries
+
+│── Dockerfile.mlapp            # Dockerfile for ML Application
+
+│── Dockerfile.mlflow           # Dockerfile for MLFlow Server
+
+│── Dockerfile.train            # Dockerfile for MLFlow Server
+
 │── Docker-compose.yml          # Docker Compose file for Multi-Container Setup
+
 
 Dataset:
 - Food_Drive_2023.csv: Historical donation data used for training
