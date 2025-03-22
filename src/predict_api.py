@@ -4,20 +4,11 @@ import pandas as pd
 import logging
 import yaml
 from flask import Flask, request, jsonify
+from logging_config import configure_logging
 
 # Configure logging
-log_dir = os.environ.get("LOG_DIR", "logs")
-os.makedirs(log_dir, exist_ok=True)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(os.path.join(log_dir, "predict_api.log")),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger("ml_app.api") 
+loggers = configure_logging()
+logger = loggers['api']
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -70,10 +61,12 @@ def predict_v1():
     """Predict endpoint using model version 1"""
     data = request.get_json()
     if not data:
+        logger.warning("No data provided")
         return jsonify({"error": "No data provided"}), 400
     try:
         df = pd.DataFrame([data])
         prediction = model_v1.predict(df).tolist()
+        logger.info(f"Prediction successful: {prediction}")
         return jsonify({"prediction": prediction})
     except Exception as e:
         logging.error(f"Prediction error: {e}")
@@ -94,4 +87,5 @@ def predict_v2():
         return jsonify({"error": "Prediction failed"}), 500
 
 if __name__ == "__main__":
+    logger.info("Starting API server...")
     app.run(host="127.0.0.1", port=5000, debug=True)
