@@ -17,6 +17,8 @@ from logging_config import configure_logging
 loggers = configure_logging()
 logger = loggers["train"]
 
+logger.info("Training script started.")
+
 # Set the MLflow tracking URI to the mlflow service in the Docker Compose network
 mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://mlflow:5001")
 mlflow.set_tracking_uri(mlflow_tracking_uri)

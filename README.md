@@ -104,5 +104,5 @@ Experiment Tracking:
 - All experiments and runs are logged the experiment name CMPT2500
 
 Docker Hub links:
-- ML Application Image: https://hub.docker.com/repository/docker/hanghongmy/ml-application/tags/latest/sha256-4a871b4c6b87a9c393669345bb791280a999b5d20a5778c716c72b04f23f1035
-- MLflow Images: https://hub.docker.com/repository/docker/hanghongmy/ml-application/image-management
+- ML Application Image: https://hub.docker.com/repository/docker/hanghongmy/ml-application
+- MLflow Images: https://hub.docker.com/repository/docker/hanghongmy/mlflow
