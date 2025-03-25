@@ -11,6 +11,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./models:/app/models
+      - ./logs:/app/logs
 
   mlflow:
     build:
@@ -22,6 +23,20 @@ services:
       - ml-network
     volumes:
       - ./mlruns:/mlflow/mlruns
+
+  train:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    networks:
+      - ml-network
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    command: ["python", "src/train.py"]
 
 networks:
   ml-network:
