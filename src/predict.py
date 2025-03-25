@@ -8,9 +8,15 @@ import mlflow.sklearn
 import subprocess
 import matplotlib.pyplot as plt
 import seaborn as sns
+from logging_config import configure_logging
+
+
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+loggers = configure_logging()
+logger = loggers["predict"]
+
+logger.info("Predict script started.")
 
 class Predictor:
     def __init__(self, config_path="configs/predict_config.yaml"):
