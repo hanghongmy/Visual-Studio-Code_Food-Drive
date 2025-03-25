@@ -1,0 +1,22 @@
+mlruns/
+.venv/
+
+# Data directories
+data/raw/
+data/processed/
+data/external/
+data/predictions/
+ 
+__pycache__/
+
+.gitingore
+.gitattributes/
+
+Makefile
+
+Dockerfile.mlapp
+
+.git/
+gdrive-key.json
+
+models/

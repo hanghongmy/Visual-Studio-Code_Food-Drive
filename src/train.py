@@ -12,6 +12,10 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
+# Set the MLflow tracking URI to the mlflow service in the Docker Compose network
+mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://mlflow:5000")
+mlflow.set_tracking_uri(mlflow_tracking_uri)
+
 class Trainer:
     def __init__(self, config_path: str):
         """
@@ -172,4 +176,4 @@ class Trainer:
 if __name__ == "__main__":
     trainer = Trainer(config_path="configs/train_config.yaml")
     trainer.train_pipeline()
-    subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
