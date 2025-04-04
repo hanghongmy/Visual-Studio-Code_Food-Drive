@@ -6,3 +6,310 @@
 2025-03-18 20:35:35,209 - INFO -  * Debugger PIN: 892-573-712
 2025-03-18 20:37:53,234 - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:53] "POST /v1/predict HTTP/1.1" 200 -
 2025-03-18 20:40:21,968 - INFO - 127.0.0.1 - - [18/Mar/2025 20:40:21] "POST /v1/predict HTTP/1.1" 200 -
+2025-04-03 18:56:47,849 - predict_api - INFO - Starting API server...
+2025-04-03 18:56:47,861 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 18:56:47,861 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 18:56:47,861 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 18:56:49,371 - predict_api - INFO - Starting API server...
+2025-04-03 18:56:49,377 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 18:56:49,390 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 18:56:50,916 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 18:56:50] "GET / HTTP/1.1" 200 -
+2025-04-03 18:57:00,388 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 18:57:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 18:58:00,387 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 18:58:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 18:59:00,397 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 18:59:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:00:00,398 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:00:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:01:00,410 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:01:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:02:00,411 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:02:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:03:00,404 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:03:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:04:00,422 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:04:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:04:37,511 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 237, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:04:37,513 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:04:37] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:05:00,403 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:05:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:06:00,421 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:06:00] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:06:42,967 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:06:42] "[33mPOST /ajax-api/2.0/mlflow/runs/search HTTP/1.1[0m" 404 -
+2025-04-03 19:13:59,608 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 198, in explain_shap_v1
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:13:59,612 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:13:59] "[35m[1mPOST /v1/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:14:10,567 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 237, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:14:10,568 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:14:10] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:19:15,964 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap', reloading
+2025-04-03 19:19:17,316 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:19:19,877 - predict_api - INFO - Starting API server...
+2025-04-03 19:19:19,881 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:19:19,887 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:19:30,676 - predict_api - INFO - Starting API server...
+2025-04-03 19:19:30,683 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:19:30,683 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:19:30,684 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:19:32,122 - predict_api - INFO - Starting API server...
+2025-04-03 19:19:32,126 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:19:32,127 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:19:38,718 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 241, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:19:38,720 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:19:38] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:24:08,759 - predict_api - INFO - Starting API server...
+2025-04-03 19:24:08,766 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:24:08,766 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:24:08,767 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:24:10,241 - predict_api - INFO - Starting API server...
+2025-04-03 19:24:10,246 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:24:10,248 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:24:18,368 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 246, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:24:18,369 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:24:18] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:26:21,891 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap', reloading
+2025-04-03 19:26:22,319 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:26:23,856 - predict_api - INFO - Starting API server...
+2025-04-03 19:26:23,860 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:26:23,863 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:27:11,067 - predict_api - INFO - Starting API server...
+2025-04-03 19:27:11,076 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:27:11,076 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:27:11,077 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:27:12,493 - predict_api - INFO - Starting API server...
+2025-04-03 19:27:12,497 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:27:12,498 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:27:20,379 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 254, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:27:20,380 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:27:20] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:33:01,234 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap', reloading
+2025-04-03 19:33:01,655 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:33:03,124 - predict_api - INFO - Starting API server...
+2025-04-03 19:33:03,131 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:33:03,133 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:33:12,377 - predict_api - INFO - Starting API server...
+2025-04-03 19:33:12,383 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:33:12,384 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:33:12,384 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:33:13,864 - predict_api - INFO - Starting API server...
+2025-04-03 19:33:13,869 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:33:13,871 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:33:38,233 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 256, in explain_shap_v2
+    explainer.expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:33:38,234 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:33:38] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:35:35,805 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap', reloading
+2025-04-03 19:35:36,196 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:35:37,690 - predict_api - INFO - Starting API server...
+2025-04-03 19:35:37,696 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:35:37,698 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:35:44,207 - predict_api - INFO - Starting API server...
+2025-04-03 19:35:44,213 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:35:44,213 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:35:44,213 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:35:45,674 - predict_api - INFO - Starting API server...
+2025-04-03 19:35:45,678 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:35:45,679 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:35:54,031 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 256, in explain_shap_v2
+    expected_value[0], shap_values.values[0], df.iloc[0]
+    ~~~~~~~~~~~~~~^^^
+IndexError: invalid index to scalar variable.
+
+2025-04-03 19:35:54,032 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:35:54] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:37:45,256 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap', reloading
+2025-04-03 19:37:45,646 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:37:47,106 - predict_api - INFO - Starting API server...
+2025-04-03 19:37:47,111 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:37:47,113 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:37:54,420 - predict_api - INFO - Starting API server...
+2025-04-03 19:37:54,427 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:37:54,427 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:37:54,428 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:37:55,947 - predict_api - INFO - Starting API server...
+2025-04-03 19:37:55,951 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:37:55,953 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:38:00,185 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap", line 262, in explain_shap_v2
+    shap.save_html(buf, force_plot)
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/venv/lib/python3.12/site-packages/shap/plots/_force.py", line 335, in save_html
+    out_file.write("<html><head><meta http-equiv='content-type' content='text/html'; charset='utf-8'>")
+TypeError: a bytes-like object is required, not 'str'
+
+2025-04-03 19:38:00,186 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:38:00] "[35m[1mPOST /v2/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 19:39:47,093 - predict_api - INFO - Starting API server...
+2025-04-03 19:39:47,099 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:39:47,100 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:39:47,100 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:39:48,561 - predict_api - INFO - Starting API server...
+2025-04-03 19:39:48,565 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:39:48,567 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:39:54,144 - predict_api - INFO - SHAP explanation generated successfully for model v2
+2025-04-03 19:39:54,145 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:39:54] "POST /v2/explain_shap HTTP/1.1" 200 -
+2025-04-03 19:42:54,630 - predict_api - INFO - Starting API server...
+2025-04-03 19:42:54,637 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:42:54,637 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:42:54,637 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:42:56,014 - predict_api - INFO - Starting API server...
+2025-04-03 19:42:56,018 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:42:56,019 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:43:00,569 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:43:00] "GET / HTTP/1.1" 200 -
+2025-04-03 19:45:06,315 - predict_api - INFO - Starting API server...
+2025-04-03 19:45:06,321 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:45:06,321 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:45:06,322 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:45:07,719 - predict_api - INFO - Starting API server...
+2025-04-03 19:45:07,722 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:45:07,724 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:45:31,669 - predict_api - INFO - SHAP explanation generated successfully for model v1
+2025-04-03 19:45:31,671 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:45:31] "POST /v1/explain_shap HTTP/1.1" 200 -
+2025-04-03 19:46:55,446 - predict_api - INFO - Starting API server...
+2025-04-03 19:46:55,451 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:46:55,451 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:46:55,452 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:46:56,839 - predict_api - INFO - Starting API server...
+2025-04-03 19:46:56,844 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:46:56,847 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:47:02,704 - predict_api - INFO - SHAP explanation generated successfully for model v2
+2025-04-03 19:47:02,706 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:47:02] "POST /v2/explain_shap HTTP/1.1" 200 -
+2025-04-03 19:47:23,392 - predict_api - INFO - SHAP explanation generated successfully for model v1
+2025-04-03 19:47:23,393 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:47:23] "POST /v1/explain_shap HTTP/1.1" 200 -
+2025-04-03 19:49:02,913 - predict_api - INFO - Starting API server...
+2025-04-03 19:49:02,920 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:49:02,920 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:49:02,921 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:49:04,423 - predict_api - INFO - Starting API server...
+2025-04-03 19:49:04,427 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:49:04,428 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:54:57,224 - predict_api - INFO - Starting API server...
+2025-04-03 19:54:57,233 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 19:54:57,233 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 19:54:57,234 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 19:54:58,309 - predict_api - INFO - Starting API server...
+2025-04-03 19:54:58,314 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 19:54:58,315 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 19:55:08,272 - predict_api - INFO - LIME explanation saved to logs/lime_explanation_v1.png
+2025-04-03 19:55:08,273 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:55:08] "POST /v1/explain_lime HTTP/1.1" 200 -
+2025-04-03 19:55:36,705 - predict_api - INFO - LIME explanation saved to logs/lime_explanation_v2.png
+2025-04-03 19:55:36,706 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 19:55:36] "POST /v2/explain_lime HTTP/1.1" 200 -
+2025-04-03 19:59:55,377 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap.py', reloading
+2025-04-03 20:00:07,898 - predict_api - INFO - Starting API server...
+2025-04-03 20:00:07,904 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 20:00:07,904 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 20:00:07,905 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 20:00:09,373 - predict_api - INFO - Starting API server...
+2025-04-03 20:00:09,377 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 20:00:09,379 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 20:00:40,176 - predict_api - ERROR - SHAP explanation error: Traceback (most recent call last):
+  File "/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap.py", line 212, in explain_shap_v1
+    plt.savefig(image_path, bbox_inches="tight")
+    ^^^
+NameError: name 'plt' is not defined
+
+2025-04-03 20:00:40,178 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:00:40] "[35m[1mPOST /v1/explain_shap HTTP/1.1[0m" 500 -
+2025-04-03 20:00:43,886 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:00:43] "GET / HTTP/1.1" 200 -
+2025-04-03 20:10:39,806 - predict_api - INFO - Starting API server...
+2025-04-03 20:10:39,816 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 20:10:39,816 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 20:10:39,817 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 20:10:41,788 - predict_api - INFO - Starting API server...
+2025-04-03 20:10:41,792 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 20:10:41,800 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 20:10:44,119 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:10:44] "GET / HTTP/1.1" 200 -
+2025-04-03 20:15:35,763 - werkzeug - INFO -  * Detected change in '/home/hhong/Visual-Studio-Code_Food-Drive/src/predict_api_shap.py', reloading
+2025-04-03 20:15:36,406 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 20:15:38,364 - predict_api - INFO - Starting API server...
+2025-04-03 20:15:38,370 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 20:15:38,373 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 20:15:42,514 - predict_api - INFO - Starting API server...
+2025-04-03 20:15:42,521 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 20:15:42,521 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 20:15:42,522 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 20:15:44,036 - predict_api - INFO - Starting API server...
+2025-04-03 20:15:44,040 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 20:15:44,043 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 20:15:50,293 - predict_api - INFO - SHAP explanation saved to logs/shap_explanation_v1.png
+2025-04-03 20:15:50,294 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:15:50] "POST /v1/explain_shap HTTP/1.1" 200 -
+2025-04-03 20:16:22,822 - predict_api - INFO - SHAP explanation saved to logs/shap_explanation_v2.png
+2025-04-03 20:16:22,822 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:16:22] "POST /v2/explain_shap HTTP/1.1" 200 -
+2025-04-03 20:20:48,984 - predict_api - INFO - Starting API server...
+2025-04-03 20:20:48,990 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.17.51.51:5000
+2025-04-03 20:20:48,990 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-03 20:20:48,991 - werkzeug - INFO -  * Restarting with stat
+2025-04-03 20:20:50,645 - predict_api - INFO - Starting API server...
+2025-04-03 20:20:50,650 - werkzeug - WARNING -  * Debugger is active!
+2025-04-03 20:20:50,652 - werkzeug - INFO -  * Debugger PIN: 133-212-611
+2025-04-03 20:20:56,347 - predict_api - INFO - SHAP explanation saved to logs/shap_explanation_v1.png
+2025-04-03 20:20:56,348 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:20:56] "POST /v1/explain_shap HTTP/1.1" 200 -
+2025-04-03 20:21:13,711 - predict_api - INFO - SHAP explanation saved to logs/shap_explanation_v2.png
+2025-04-03 20:21:13,711 - werkzeug - INFO - 127.0.0.1 - - [03/Apr/2025 20:21:13] "POST /v2/explain_shap HTTP/1.1" 200 -

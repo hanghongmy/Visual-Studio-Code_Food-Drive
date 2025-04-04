@@ -10,3 +10,4 @@ mlruns/
 # Ignore configs folder
 configs/
 predictions/Food_Drive_2024_Predictions.csv
+prometheus/prometheus.yml

@@ -3,9 +3,13 @@ init-cpu:
 	@echo "Initializing CPU environment..."
 	python3 -m venv venv
 	@echo "Activating environment and installing dependencies..."
-	./venv/bin/python -m pip install --upgrade pip
-	./venv/bin/python -m pip install -r requirements.txt
-	./venv/bin/python -m pip install pandas
+	$(pip) install --upgrade pip
+	@echo "Installing additional requirements..."
+	$(pip) install -r requirements.txt
+	@echo "Installing Pytorch - CPU"
+	$(pip) install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+	@echo "Setup complete! Run 'source venv/bin/activate' to activate the environment."
+	source venv/bin/activate
 
 # Install DVC
 init-dvc:
@@ -45,5 +49,5 @@ mlflow-ui:
 
 # Run MLflow server
 mlflow-server:
-    @echo "Launching MLflow server..."
-    ./venv/bin/mlflow server --host 127.0.0.1 --port 5000
+	@echo "Launching MLflow server..."
+	./venv/bin/mlflow server --host 127.0.0.1 --port 5000
