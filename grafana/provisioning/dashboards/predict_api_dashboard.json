@@ -1,0 +1,28 @@
+{
+    "dashboard": {
+      "id": null,
+      "title": "Prediction API Metrics",
+      "panels": [
+        {
+          "type": "graph",
+          "title": "Prediction Requests",
+          "targets": [
+            {
+              "expr": "model_prediction_requests_total",
+              "legendFormat": "{{model_version}} - {{status}}"
+            }
+          ]
+        },
+        {
+          "type": "graph",
+          "title": "Prediction Time",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(model_prediction_duration_seconds_bucket[5m])) by (le))",
+              "legendFormat": "Latency (95th Percentile)"
+            }
+          ]
+        }
+      ]
+    }
+  }

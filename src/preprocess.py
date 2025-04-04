@@ -4,13 +4,14 @@ import logging
 import mlflow
 import subprocess
 
+mlflow.set_tracking_uri("file:./mlruns")  #Force local mlruns folder
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Preprocessor:
     def __init__(self, raw_data_path, external_data_path_assessed, processed_data_path):
         self.raw_data_path = raw_data_path
-        self.external_data_path_assessed = external_data_path_assessed        
+        self.external_data_path_assessed = external_data_path_assessed      
         self.processed_data_path = processed_data_path
         self.df = None
         self.external_df = None
@@ -122,6 +123,9 @@ class Preprocessor:
             self.df.to_csv(self.processed_data_path, index=False)
             logging.info(f"Processed data saved at {self.processed_data_path}.")
             mlflow.log_param("processed_data_rows", self.df.shape[0])
+            mlflow.log_artifact(self.processed_data_path)
+            logging.info("Processed data saved and logged in MLflow.")
+            
 
 
     def preprocess(self):

@@ -11,23 +11,50 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
-from logging_config import configure_logging
+from utils.monitoring import TrainingMonitor
+from prometheus_client import start_http_server, Counter, Gauge
+from logging_handlers import RotatingFileHandler
 
-# Configure logging for the "train" module
-loggers = configure_logging()
-logger = loggers["train"]
+# Configure logging
+log_directory = 'logs'
+os.makedirs(log_directory, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+# Add a rotating file handler for the train module
+file_handler = RotatingFileHandler(
+    f'{log_directory}/train.log',
+    maxBytes=10485760,  # 10MB
+    backupCount=5  # Keep up to 5 backup files
+)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger = logging.getLogger('ml_app.train')
+logger.addHandler(file_handler)
+
+# Start Prometheus metrics server on port 8002
+start_http_server(8003)
+
+# Define Prometheus metrics
+training_loss = Gauge('training_loss', 'Training loss')
+validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy')
+epoch_count = Counter('epoch_count', 'Number of epochs completed')
 
 logger.info("Training script started.")
 
 # Set the MLflow tracking URI to the mlflow service in the Docker Compose network
-mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://mlflow:5001")
+mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
 mlflow.set_tracking_uri(mlflow_tracking_uri)
 
-# Example: Start an MLflow experiment
-mlflow.set_experiment("CMPT2500")
-with mlflow.start_run(run_name="Linear_Regression"):
-    mlflow.log_param("param1", 42)
-    mlflow.log_metric("metric1", 0.95)
+# Verify the connection to the MLflow server
+try:
+    mlflow.set_experiment("CMPT2500")
+except Exception as e:
+    logger.error(f"Failed to connect to MLflow server: {e}")
+    logger.info("Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.")
+    exit(1)
+
 
 class Trainer:
     def __init__(self, config_path: str):
@@ -60,9 +87,6 @@ class Trainer:
         self.results_regular = []  # Store results for default models
         self.results_tuned = []  # Store results for tuned models
 
-        # Configure logging
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
         # Start MLflow Experiment
         mlflow.set_experiment(self.config["mlflow_experiment_name"])
 
@@ -74,10 +98,10 @@ class Trainer:
         try:
             self.train_df = pd.read_csv(self.train_data_path)
             self.test_df = pd.read_csv(self.test_data_path)
-            logging.info(f"Step 1: Training data loaded from {self.train_data_path} ({self.train_df.shape[0]} rows).")
-            logging.info(f"Step 1: Testing data loaded from {self.test_data_path} ({self.test_df.shape[0]} rows).")
+            logger.info(f"Step 1: Training data loaded from {self.train_data_path} ({self.train_df.shape[0]} rows).")
+            logger.info(f"Step 1: Testing data loaded from {self.test_data_path} ({self.test_df.shape[0]} rows).")
         except Exception as e:
-            logging.error(f"Error loading data: {e}")
+            logger.error(f"Error loading data: {e}")
             raise
 
     def handle_missing_value(self):
@@ -89,7 +113,7 @@ class Trainer:
             categorical_cols = df.select_dtypes(include=['object']).columns
             df[categorical_cols] = df[categorical_cols].fillna("Unknown")  # Fill categorical NaNs
 
-        logging.info("Step 2: Missing values handled - Numeric with median, Categorical with 'Unknown'.")
+        logger.info("Step 2: Missing values handled - Numeric with median, Categorical with 'Unknown'.")
 
     def prepare_data(self):
         """Step 3: Prepare features and target for model training."""
@@ -101,20 +125,31 @@ class Trainer:
         self.X_test = self.test_df[feature_columns]
         self.y_test = self.test_df[target_column]
 
-        logging.info("Step 3: Data prepared for training.")
+        logger.info("Step 3: Data prepared for training.")
 
     def train_model(self, model_name, model, tuned=False):
         """Train a model and log results."""
         with mlflow.start_run(run_name=f"{model_name}_Tuned" if tuned else model_name):
-            model.fit(self.X_train, self.y_train)
+            for epoch in range(1, 6):
+                model.fit(self.X_train, self.y_train)
 
-            y_pred = model.predict(self.X_test)
-            mse = mean_squared_error(self.y_test, y_pred)
-            r2 = r2_score(self.y_test, y_pred)
+                y_pred = model.predict(self.X_test)
+                mse = mean_squared_error(self.y_test, y_pred)
+                r2 = r2_score(self.y_test, y_pred)
 
-            mlflow.log_param("tuned", tuned)
-            mlflow.log_metric("mse", mse)
-            mlflow.log_metric("r2", r2)
+                # Log metrics to MLflow
+                mlflow.log_param("tuned", tuned)
+                mlflow.log_metric("mse", mse)
+                mlflow.log_metric("r2", r2)
+
+                # Update Prometheus metrics
+                epoch_count.inc()
+                training_loss.set(mse)
+                validation_accuracy.set(r2)
+            
+                logger.info(f"Epoch {epoch} - {model_name} - MSE: {mse:.2f}, R² Score: {r2:.4f}")
+
+
 
             result = {
                 "Model": model_name + ("_Tuned" if tuned else ""),
@@ -127,24 +162,22 @@ class Trainer:
             else:
                 self.results_regular.append(result)
 
-            logging.info(f"{model_name} - MSE: {mse:.2f}, R² Score: {r2:.4f}")
-
             model_save_path = os.path.join(self.models_dir, f"{result['Model']}.pkl")
             joblib.dump(model, model_save_path)
-            logging.info(f"Model '{result['Model']}' saved to {model_save_path}.")
+            logger.info(f"Model '{result['Model']}' saved to {model_save_path}.")
 
     def hypertune_model(self, model_name, model):
         """Perform hyperparameter tuning using GridSearchCV."""
         if model_name not in self.param_grids:
             return model
 
-        logging.info(f"Hyperparameter tuning for {model_name}...")
+        logger.info(f"Hyperparameter tuning for {model_name}...")
         param_grid = self.param_grids[model_name]
         grid_search = GridSearchCV(model, param_grid, cv=3, scoring="r2", n_jobs=-1)
         grid_search.fit(self.X_train, self.y_train)
 
         best_params = grid_search.best_params_
-        logging.info(f"Best hyperparameters for {model_name}: {best_params}")
+        logger.info(f"Best hyperparameters for {model_name}: {best_params}")
 
         return grid_search.best_estimator_
 
@@ -153,7 +186,7 @@ class Trainer:
         os.makedirs(self.models_dir, exist_ok=True)
 
         for model_name, model in self.models.items():
-            logging.info(f"Training {model_name} without tuning...")
+            logger.info(f"Training {model_name} without tuning...")
             self.train_model(model_name, model, tuned=False)
 
             if model_name in self.param_grids:
@@ -170,23 +203,28 @@ class Trainer:
             subprocess.run(["git", "add", "."], check=True)
             subprocess.run(["git", "commit", "-m", "Updated processed dataset"], check=True)
             subprocess.run(["dvc", "push"], check=True)
-            logging.info("Step 5: Processed data tracked and pushed with DVC.")
+            logger.info("Step 5: Processed data tracked and pushed with DVC.")
         except subprocess.CalledProcessError as e:
-            logging.error(f"DVC tracking failed: {e}")
+            logger.error(f"DVC tracking failed: {e}")
         except FileNotFoundError:
-            logging.error("DVC is not installed. Please install DVC to track data. Using make init-dvc to install")
+            logger.error("DVC is not installed. Please install DVC to track data. Using make init-dvc to install")
 
     def train_pipeline(self):
         """Run the full training pipeline."""
-        logging.info("Starting training pipeline...")
+        logger.info("Starting training pipeline...")
         self.load_data()
         self.handle_missing_value()
         self.prepare_data()
         self.train_models()
         self.track_data_with_dvc()
-        logging.info("Training pipeline complete.")
+        logger.info("Training pipeline complete.")
 
 if __name__ == "__main__":
+    logger.info("Starting training script...")
+    # Start Promethrues metrics server
+    #start_http_server(8003)
+    logger.info("Training started...")
+    logger.info("Training completed")
     trainer = Trainer(config_path="configs/train_config.yaml")
     trainer.train_pipeline()
     #subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])

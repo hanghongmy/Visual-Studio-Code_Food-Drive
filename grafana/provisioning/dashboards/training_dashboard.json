@@ -1,0 +1,43 @@
+{
+  "id": null,
+  "uid": "training-dashboard",
+  "title": "Training Dashboard",
+  "timezone": "browser",
+  "schemaVersion": 30,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Training Loss",
+      "targets": [
+        {
+          "expr": "training_loss",
+          "legendFormat": "Training Loss"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Validation Accuracy",
+      "targets": [
+        {
+          "expr": "validation_accuracy",
+          "legendFormat": "Validation Accuracy"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      }
+    }
+  ]
+}

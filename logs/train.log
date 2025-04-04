@@ -34,3 +34,51 @@
 2025-03-20 15:05:04,365 - WARNING - Retrying (Retry(total=2, connect=2, read=7, redirect=7, status=7)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7fbba02f6c00>: Failed to resolve 'mlflow' ([Errno -3] Temporary failure in name resolution)")': /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500
 2025-03-20 15:06:19,404 - WARNING - Retrying (Retry(total=1, connect=1, read=7, redirect=7, status=7)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7fbba02f6f30>: Failed to resolve 'mlflow' ([Errno -3] Temporary failure in name resolution)")': /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500
 2025-03-20 15:08:29,438 - WARNING - Retrying (Retry(total=0, connect=0, read=7, redirect=7, status=7)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7fbba02f7170>: Failed to resolve 'mlflow' ([Errno -3] Temporary failure in name resolution)")': /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500
+2025-03-25 05:00:58,917 - INFO - Training script started.
+2025-03-24 23:04:55,685 - INFO - Training script started.
+2025-03-25 00:03:05,194 - INFO - Training script started.
+2025-04-02 03:20:24,049 - INFO - Training script started.
+2025-04-02 07:48:26,845 - INFO - Training script started.
+2025-04-02 07:50:39,851 - INFO - Training script started.
+2025-04-02 07:54:02,205 - INFO - Training script started.
+2025-04-02 07:56:23,639 - INFO - Training script started.
+2025-04-02 02:15:21,201 - INFO - Training script started.
+2025-04-02 02:21:27,498 - INFO - Training script started.
+2025-04-02 08:27:01,791 - INFO - Training script started.
+2025-04-02 08:46:39,576 - INFO - Training script started.
+2025-04-02 08:48:05,923 - INFO - Training script started.
+2025-04-02 08:49:47,925 - INFO - Training script started.
+2025-04-02 08:51:56,676 - INFO - Training script started.
+2025-04-02 08:53:32,950 - INFO - Training script started.
+2025-04-02 03:11:52,491 - INFO - Training script started.
+2025-04-02 23:07:24,125 - INFO - Training script started.
+2025-04-02 23:15:20,679 - INFO - Training script started.
+2025-04-03 05:23:24,890 - INFO - Training script started.
+2025-04-03 00:05:51,556 - INFO - Training script started.
+2025-04-03 00:10:57,731 - INFO - Training script started.
+2025-04-03 00:17:10,206 - INFO - Training script started.
+2025-04-03 12:23:52,077 - INFO - Training script started.
+2025-04-03 12:31:44,704 - INFO - Training script started.
+2025-04-03 12:31:44,705 - ERROR - Failed to connect to MLflow server: module 'mlflow' has no attribute 'set_experience'
+2025-04-03 12:31:44,705 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-03 12:34:16,945 - INFO - Training script started.
+2025-04-03 12:36:48,068 - INFO - Training script started.
+2025-04-03 12:57:11,210 - INFO - Training script started.
+2025-04-03 19:50:33,894 - INFO - Training script started.
+2025-04-03 19:55:12,648 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7fdc5d6a9e70>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
+2025-04-03 19:55:12,648 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-03 20:03:25,904 - INFO - Training script started.
+2025-04-03 20:08:04,471 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7fcf504d5a50>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
+2025-04-03 20:08:04,472 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-03 20:35:28,238 - INFO - Training script started.
+2025-04-03 20:40:23,624 - INFO - Training script started.
+2025-04-03 20:45:02,011 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7f586ad55fc0>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
+2025-04-03 20:45:02,011 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-03 20:48:23,051 - INFO - Training script started.
+2025-04-03 20:52:54,618 - INFO - Training script started.
+2025-04-03 20:54:30,030 - INFO - Training script started.
+2025-04-03 20:59:07,616 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7f3f6e21d4b0>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
+2025-04-03 20:59:07,617 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-03 22:43:31,433 - INFO - Training script started.
+2025-04-03 22:48:09,456 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7f76fc7c1f00>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
+2025-04-03 22:48:09,456 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
