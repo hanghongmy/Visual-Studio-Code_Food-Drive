@@ -1,3 +1,14 @@
+"""
+    Monitoring utilities for training processes using Prometheus.
+    It uses the 'Prometheus_client' library to expose metrics by visualizing in monitoring tools
+    like Grafana.
+    The metrics include:
+    - Metrics Collection: tracks training progress, such as number of epochs and batches completed.
+    - Prometheus Integration: starts an http server to expose metrics for Prometheus scraping.
+    - Loss Tracking: records training and validation loss.
+"""
+
+
 from prometheus_client import Gauge, Counter, start_http_server
 import time
 import logging

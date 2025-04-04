@@ -4,6 +4,17 @@ import logging
 from logging.handlers import RotatingFileHandler
 from utils.monitoring import RegressionMonitor
 
+"""
+Regression training script with monitoring and logging. This used for train a regression model.
+    - Monitoring: uses the RegressionMonitor to track training progress, including epochs,
+    batches, training loss.
+    - Logging: configures logging to record training progress and metrics.
+    - Simulated training process: simulates a training process with epochs and batches,
+    recording metrics at each step.
+    - Metrics: track and logs regression metrics such as MSE, RMSE, MAE, and R2
+    
+"""
+
 # Initialize the RegressionMonitor
 monitor = RegressionMonitor(port=8004)
 

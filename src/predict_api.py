@@ -12,7 +12,20 @@ import time
 import psutil
 import threading
 from logging.handlers import RotatingFileHandler
-
+'''
+Flask API designed to serve machine learning models for making predictions
+# Endpoints: 
+    - /v1/predict: Predict using model version 1 - 
+    - /v2/predict: Predict using model version 2
+    - /food_drive_home: Home endpoint providing API usage information
+    - /health_status: Check the health status of the API
+# Monitoring:
+    - Tracks metrics prediction requests, processing time, memory usage, and CPU usage using Prometheus
+# Flask
+    - Flask is used to create the API server
+# Prometheus
+    - Prometheus is used for monitoring and exposing metrics
+'''
 # Configure logging
 log_directory = 'logs'
 os.makedirs(log_directory, exist_ok=True)
