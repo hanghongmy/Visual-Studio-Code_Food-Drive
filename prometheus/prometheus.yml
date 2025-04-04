@@ -2,14 +2,6 @@ global:
   scrape_interval: 15s      # Default scrape interval for all job
   evaluation_interval: 15s  # Default evaluation interval for rules
 
-remote_write:
-  - url: https://prometheus-prod-32-prod-ca-east-0.grafana.net/api/prom/push
-    basic_auth:
-      username: 2362479  # Your Grafana Cloud username
-      password: glc_eyJvIjoiMTM5NDM1NiIsIm4iOiJzdGFjay0xMjE5MTIwLWFsbG95LWNtcHQyNTAwIiwiayI6IjRiOTg2ZUJ0V0ZxaDk2M0RuV3gzNXAyZSIsIm0iOnsiciI6InByb2QtY2EtZWFzdC0wIn19  # Your Grafana Cloud API key
-
-
-
 rule_files:
   - /etc/prometheus/rules/ml_alerts.yml  # Path to alert rules file 
 
