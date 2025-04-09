@@ -11,6 +11,7 @@ mlruns/
 configs/
 predictions/Food_Drive_2024_Predictions.csv
 prometheus/prometheus.yml
+# Ignore logs directory
 logs/
 logs/predict.log
 logs/train.log

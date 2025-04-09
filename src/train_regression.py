@@ -4,7 +4,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from utils.monitoring import RegressionMonitor
 from threading import Thread
-
+from flask import Flask, jsonify
 """
 Regression training script with monitoring and logging. This used for train a regression model.
     - Monitoring: uses the RegressionMonitor to track training progress, including epochs,
@@ -15,12 +15,9 @@ Regression training script with monitoring and logging. This used for train a re
     - Metrics: track and logs regression metrics such as MSE, RMSE, MAE, and R2
     
 """
+# Initialize Flask app
+app = Flask(__name__)
 
-# Initialize the RegressionMonitor
-monitor = RegressionMonitor(port=8002)
-
-# Start Prometheus metrics server on Port 8002
-start_http_server(8002)
 # Configure logging
 log_directory = 'logs'
 os.makedirs(log_directory, exist_ok=True)
@@ -42,8 +39,8 @@ logger.addHandler(file_handler)
 
 logger.info("Starting regression training process...")
 
-# Initialize Flask app
-app = Flask(__name__)
+# Initialize the RegressionMonitor
+monitor = RegressionMonitor(port=8002)
 
 # Define a route to expose metrics
 @app.route('/metrics', methods=['GET'])

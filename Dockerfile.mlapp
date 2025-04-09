@@ -17,11 +17,11 @@ RUN pip install --upgrade pip setuptools wheel
 RUN pip install numpy==1.26.4  # Explicitly install numpy first
 RUN pip install -r requirements.txt
 
-# Create logs directory
-RUN mkdir -p /app/logs
-
 # Copy application code
 COPY . .
+
+# Create logs directory
+RUN mkdir -p /app/logs
 
 # Copy only the necessary files for your application
 COPY src/ /app/src/

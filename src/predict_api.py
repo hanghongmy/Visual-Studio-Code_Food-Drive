@@ -3,224 +3,130 @@ import joblib
 import pandas as pd
 import logging
 import yaml
-from flask import Flask, request, jsonify, request
-from prometheus_flask_exporter import PrometheusMetrics
-from prometheus_client import Counter, Histogram, Gauge
-from prometheus_client import start_http_server
-from utils.monitoring import validation_accuracy
-import matplotlib.pyplot as plt
 import time
 import psutil
 import threading
+from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
 from logging.handlers import RotatingFileHandler
-'''
-Flask API designed to serve machine learning models for making predictions
-# Endpoints: 
-    - /v1/predict: Predict using model version 1 - 
-    - /v2/predict: Predict using model version 2
-    - /food_drive_home: Home endpoint providing API usage information
-    - /health_status: Check the health status of the API
-# Monitoring:
-    - Tracks metrics prediction requests, processing time, memory usage, and CPU usage using Prometheus
-# Flask
-    - Flask is used to create the API server
-# Prometheus
-    - Prometheus is used for monitoring and exposing metrics
-'''
-# Configure logging
-log_directory = 'logs'
-os.makedirs(log_directory, exist_ok=True)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-start_http_server(9000) 
-
-REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests to the API")
-
-
-
-# Add a rotating file handler for the predict module
-file_handler = RotatingFileHandler(
-    f'{log_directory}/predict.log',
-    maxBytes=10485760,  # 10MB
-    backupCount=5  # Keep up to 5 backup files
-)
-file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-logger = logging.getLogger('ml_app.predict')
-logger.addHandler(file_handler)
-
-# Initialize Flask app
-app = Flask(__name__)
-metrics = PrometheusMetrics(app)
-
-# Custom metrics
-prediction_requests = Counter(
-    'model_prediction_requests_total',
-    'Total number of prediction requests',
-    ['model_version', 'status']
-)
-prediction_time = Histogram(
-    'model_prediction_duration_seconds',
-    'Time spent processing prediction',
-    ['model_version']
-)
-memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application')
-cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
-disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application')
-validation_accuracy = Gauge('model_validation_accuracy', 'Validation accuracy of the model')
 # Load configuration
-config_path = "configs/predict_config.yaml"
-if not os.path.exists(config_path):
-    raise FileNotFoundError(f"Config file not found: {config_path}")
-with open(config_path, "r") as file:
+CONFIG_PATH = "configs/predict_config.yaml"
+if not os.path.exists(CONFIG_PATH):
+    raise FileNotFoundError(f"Config file not found: {CONFIG_PATH}")
+with open(CONFIG_PATH, "r") as file:
     config = yaml.safe_load(file)
 
 model_v1_path = config.get("model_v1_path")
 model_v2_path = config.get("model_v2_path")
-
+feature_columns = config.get("feature_columns")
 if not model_v1_path or not os.path.exists(model_v1_path):
     raise FileNotFoundError(f"Model v1 file not found: {model_v1_path}")
-
 if not model_v2_path or not os.path.exists(model_v2_path):
     raise FileNotFoundError(f"Model v2 file not found: {model_v2_path}")
+if not feature_columns:
+    raise ValueError("Feature columns not found in config")
 
 # Load models
 model_v1 = joblib.load(model_v1_path)
 model_v2 = joblib.load(model_v2_path)
 
-# Extract feature columns from config
-feature_columns = config.get("feature_columns")
-if not feature_columns:
-    raise ValueError("Feature columns not found in config")
+# Initialize Flask app
+app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+
+# Setup logging
+log_directory = 'logs'
+os.makedirs(log_directory, exist_ok=True)
+logger = logging.getLogger('ml_app.predict')
+logger.setLevel(logging.INFO)
+file_handler = RotatingFileHandler(f'{log_directory}/predict.log', maxBytes=10485760, backupCount=5)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
+
+# Prometheus custom metrics
+REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests to the API")
+prediction_requests = Counter('model_prediction_requests_total', 'Prediction request count', ['model_version', 'status'])
+prediction_time = Histogram('model_prediction_duration_seconds', 'Prediction time duration', ['model_version'])
+memory_usage = Gauge('app_memory_usage_bytes', 'App memory usage')
+cpu_usage = Gauge('app_cpu_usage_percent', 'App CPU usage')
+disk_usage = Gauge('app_disk_usage_bytes', 'App disk usage')
+validation_accuracy = Gauge('model_validation_accuracy', 'Validation accuracy of the model')
 
 
-@app.route('/', methods=['GET'])
-def root():
-    """Root endpoint to redirect to /food_drive_home"""
-    return jsonify({
-        "message": "Welcome to the Food Drive Prediction API. Try making a prediction for the experiment."
-    })
-
-@app.route('/food_drive_home', methods=['GET'])
-def home():
-    """Home endpoint providing API usage information"""
-    info = {
-        "description": "This API serves machine learning models for predicting donation bags collected.",
-        "endpoints": {
-            "/v1/predict": "Predict using model version 1",
-            "/v2/predict": "Predict using model version 2",
-            "/health_status": "Check the health status of the API"
-        },
-        "request_format": {
-            "time_spent": "float",
-            "doors_in_route": "int",
-            "assessed_value": "float"
-        }
-    }
-    return jsonify(info)
-
-@app.route('/health_status', methods=['GET'])
-def health_status():
-    """Health endpoint to confirm API is running"""
-    return jsonify({"status": "API is running and operational"})
-
-def validate_input(data):
-    """Validate input data against required feature"""
-    missing_features = [feature for feature in feature_columns if feature not in data]
-    if missing_features:
-        return False, f"Missing features: {missing_features}"
-    return True, None
-
-
-
-
-@app.route('/v1/predict', methods=['POST'])
-def predict_v1():
-    """Predict endpoint using model version 1"""
-    REQUEST_COUNT.inc()
-    start_time = time.time()
-    model_version = "v1"
-    
-    data = request.get_json()
-    if not data:
-        logger.warning("No data provided")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": "No data provided"}), 400
-    
-    # Validate input
-    is_valid, error_message = validate_input(data)
-    if not is_valid:
-        logger.warning(f"Invalid input: {error_message}")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": error_message}), 400
-    
-    try:
-        # Convert input to dataframe
-        df = pd.DataFrame([data], columns=feature_columns)
-        prediction = model_v1.predict(df).tolist()
-        
-        # Record successful prediction
-        prediction_requests.labels(model_version=model_version, status="success").inc()
-        duration = time.time() - start_time
-        prediction_time.labels(model_version=model_version).observe(duration)
-        
-        logger.info(f"Prediction successful: {prediction}")
-        return jsonify({"prediction": prediction})
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": "Prediction failed"}), 500
-
-@app.route('/v2/predict', methods=['POST'])
-def predict_v2():
-    """Predict endpoint using model version 2"""
-    REQUEST_COUNT.inc()
-    start_time = time.time()
-    model_version = "v2"
-    
-    data = request.get_json()
-    if not data:
-        logger.warning("No data provided")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": "No data provided"}), 400
-    
-    # Validate input
-    is_valid, error_message = validate_input(data)
-    if not is_valid:
-        logger.warning(f"Invalid input: {error_message}")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": error_message}), 400
-    try:
-        #Convert input to dataframe
-        df = pd.DataFrame([data], columns=feature_columns)
-        prediction = model_v2.predict(df).tolist()
-        
-        # Record successful prediction
-        prediction_requests.labels(model_version=model_version, status="success").inc()
-        duration = time.time() - start_time
-        prediction_time.labels(model_version=model_version).observe(duration)
-        
-        logger.info(f"Prediction successful: {prediction}")
-        return jsonify({"prediction": prediction})
-    except Exception as e:
-        logger.error(f"Prediction error: {e}")
-        prediction_requests.labels(model_version=model_version, status="error").inc()
-        return jsonify({"error": "Prediction failed"}), 500
-
+# System monitoring
 def monitor_resources():
     """Update system resource metrics every 15 seconds"""
     while True:
         process = psutil.Process(os.getpid())
-        memory_usage.set(process.memory_info().rss)  # in bytes
+        memory_usage.set(process.memory_info().rss)
         cpu_usage.set(process.cpu_percent())
-        disk_usage.set(psutil.disk_usage('/').used) 
-        time.sleep(15)      
+        disk_usage.set(psutil.disk_usage('/').used)
+        time.sleep(15)
 
-@app.route('/metrics', methods=['GET'])
-def metrics():
-    return "Metrics endpoint"
+# Input validation
+def validate_input(data):
+    missing = [feature for feature in feature_columns if feature not in data]
+    return (len(missing) == 0, f"Missing features: {missing}" if missing else None)
+
+# API Endpoints
+@app.route("/", methods=["GET"])
+def root():
+    return jsonify({"message": "Welcome to the Food Drive Prediction API."})
+
+@app.route("/food_drive_home", methods=["GET"])
+def home():
+    return jsonify({
+        "description": "Predict donation bags collected.",
+        "endpoints": {
+            "/v1/predict": "Model v1",
+            "/v2/predict": "Model v2",
+            "/health_status": "API health check"
+        },
+        "input_format": {
+            "time_spent": "float",
+            "doors_in_route": "int",
+            "assessed_value": "float"
+        }
+    })
+
+@app.route("/health_status", methods=["GET"])
+def health_status():
+    return jsonify({"status": "API operational"})
+
+@app.route("/v1/predict", methods=["POST"])
+def predict_v1():
+    return make_prediction(model_v1, "v1")
+
+@app.route("/v2/predict", methods=["POST"])
+def predict_v2():
+    return make_prediction(model_v2, "v2")
+
+def make_prediction(model, version):
+    REQUEST_COUNT.inc()
+    start_time = time.time()
+
+    data = request.get_json()
+    if not data:
+        prediction_requests.labels(version, "error").inc()
+        return jsonify({"error": "No data provided"}), 400
+
+    is_valid, error_msg = validate_input(data)
+    if not is_valid:
+        prediction_requests.labels(version, "error").inc()
+        return jsonify({"error": error_msg}), 400
+
+    try:
+        df = pd.DataFrame([data], columns=feature_columns)
+        prediction = model.predict(df).tolist()
+        prediction_requests.labels(version, "success").inc()
+        prediction_time.labels(version).observe(time.time() - start_time)
+        return jsonify({"prediction": prediction})
+    except Exception as e:
+        logger.error(f"Prediction failed: {e}")
+        prediction_requests.labels(version, "error").inc()
+        return jsonify({"error": "Prediction failed"}), 500
 
 @app.route('/update_metrics', methods=['POST'])
 def update_metrics():
@@ -230,7 +136,6 @@ def update_metrics():
         return jsonify({"error": "Missing 'validation_accuracy' in request data"}), 400
 
     val_accuracy = data.get('validation_accuracy', 0.0)
-    validation_accuracy.set(val_accuracy)  # Update the Prometheus metric
     logger.info(f"Validation accuracy updated to {val_accuracy}")
     return jsonify({"message": f"Validation accuracy updated to {val_accuracy}"}), 200
 
@@ -238,7 +143,7 @@ if __name__ == "__main__":
     logger.info("Starting API server...")
 
     # Start Prometheus metrics server
-    threading.Thread(target=start_http_server, args=(8010,), daemon=True).start()
+    threading.Thread(target=start_http_server, args=(8020,), daemon=True).start()
     
     # Start resource monitoring in a separate thread
     threading.Thread(target=monitor_resources, daemon=True).start()

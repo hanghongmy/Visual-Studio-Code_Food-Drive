@@ -9,32 +9,37 @@
 """
 
 
-from prometheus_client import Gauge, Counter, start_http_server
+from prometheus_client import Gauge, Counter, start_http_server, CollectorRegistry
 import psutil
 import os
 import time
 
 
-# Global Prometheus metrics
-validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy of the model')
-training_loss = Gauge('training_loss', 'Training loss of the model')
-epoch_count = Counter('training_epoch_total', 'Total number of epochs completed')
+registry = CollectorRegistry()
+
+class SystemMonitor:
+    def __init__(self):
+        self.memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application', registry=registry)
+        self.cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application', registry=registry)
+        self.disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application', registry=registry)
+    def update_metrics(self):
+        """Update system resource metrics."""
+        process = psutil.Process(os.getpid())
+        self.memory_usage.set(process.memory_info().rss)
+        self.cpu_usage.set(process.cpu_percent())
+        self.disk_usage.set(psutil.disk_usage('/').used)
 
 class TrainingMonitor:
-    """Base class for monitoring training processes."""
-    def __init__(self, port=8002):
-        # Start Prometheus HTTP server
-        start_http_server(port)
-        self.epoch = Counter('training_epoch_total', 'Total number of epochs completed')
-        self.batch = Counter('training_batch_total', 'Total number of batches processed')
-        self.loss = Gauge('training_loss', 'Current training loss')
-        self.validation_loss = Gauge('validation_loss', 'Current validation loss')
-        self.accuracy = Gauge('validation_accuracy', 'Current validation accuracy')
-        self.custom_metric = Gauge('custom_metric_name', 'Description of the custom metric')
-        self.cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
-        # Add a new Counter for Flask HTTP requests
-        self.flask_requests = Counter('flask_http_requests_total', 'Total number of HTTP requests handled by Flask')
-
+    """Base class for tracking ML training metrics."""
+    def __init__(self, port=8002, registry=registry):
+        start_http_server(port, registry=registry)
+        self.epoch = Counter('training_epoch_total', 'Total number of epochs completed', registry=registry)
+        self.batch = Counter('training_batch_total', 'Total number of batches processed', registry=registry)
+        self.loss = Gauge('training_loss', 'Current training loss', registry=registry)
+        self.validation_loss = Gauge('validation_loss', 'Current validation loss', registry=registry)
+        self.accuracy = Gauge('validation_accuracy', 'Current validation accuracy', registry=registry)
+        self.custom_metric = Gauge('custom_metric_name', 'Description of the custom metric', registry=registry)
+        self.flask_requests = Counter('flask_http_requests_total', 'Total HTTP requests handled by Flask', registry=registry)
 
     def record_epoch(self):
         """Increment epoch counter."""
@@ -124,19 +129,6 @@ class RegressionMonitor(TrainingMonitor):
 #        self.tree_leaves.set(0)
 #        self.trees_count.set(0)
 #        self.iteration_improvement.set(0)
-class SystemMonitor:
-    """Monitoring for system resource usage."""
-    def __init__(self):
-        self.memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application')
-        self.cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
-        self.disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application')
-
-    def update_metrics(self):
-        """Update system resource metrics."""
-        process = psutil.Process(os.getpid())
-        self.memory_usage.set(process.memory_info().rss)
-        self.cpu_usage.set(process.cpu_percent())
-        self.disk_usage.set(psutil.disk_usage('/').used)
 
 if __name__ == "__main__":
     monitor = RegressionMonitor(port=8004)

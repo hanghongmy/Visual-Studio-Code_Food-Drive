@@ -25,6 +25,10 @@ def check_api(data, endpoint, host="localhost", port=5000):
             logger.info(f"Response:\n{json.dumps(response.json(), indent=2)}")
         else:
             logger.error(f"Error response:\n{response.text}")
+    except requests.exceptions.ConnectionError as e:
+        logger.error(f"Failed to connect to the API: {e}")
+    except requests.exceptions.Timeout as e:
+        logger.error(f"Request timed out: {e}")
     except requests.exceptions.RequestException as e:
         logger.error(f"Error communicating with API: {e}")
         if hasattr(e, 'response') and e.response is not None:
@@ -51,6 +55,13 @@ def main():
         input_data = json.loads(args.data)
     except json.JSONDecodeError as e:
         logger.error(f"Invalid input data format: {e}")
+        return
+
+    # Validate input data
+    required_fields = {"time_spent", "doors_in_route", "assessed_value"}
+    missing_fields = required_fields - input_data.keys()
+    if missing_fields:
+        logger.error(f"Missing required fields: {missing_fields}")
         return
 
     # Check the API
