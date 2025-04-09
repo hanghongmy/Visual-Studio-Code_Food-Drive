@@ -2,12 +2,12 @@
 Docker-compose up --build
 
 # Service Access Information
-- Service        |Flask   |    Prometheus Port  |   Host Port Mapping
-+ ml-app         |5000    |   8010 (internal)   |     5000 -> 5000
-+ train-metrics  |-       |   8003 (internal)   |      -----------
-+ mlflow         |5000    |   ---------------   |     5002 -> 5000
-+ prometheus     |-       |   9090 (internal)   |    localhost:9090
-+ grafana        |-       |   ---------------   | http://localhost:3000/
+- Service--------|Flask---|---Prometheus Port---|---Host Port Mapping
++ ml-app---------|-5000---|---8010 (internal)---|-----5000 -> 5000
++ train-metrics--|--------|---8003 (internal)---|-----------
++ mlflow---------|--5000--|---------------------|-----5002 -> 5000
++ prometheus-----|--------|---9090 (internal)---|----localhost:9090
++ grafana--------|--------|---------------------| http://localhost:3000/
 
 # Running ML Application - Logs and metrics are sent to both MLflow and Prometheus
 Training the Model (train.py)
