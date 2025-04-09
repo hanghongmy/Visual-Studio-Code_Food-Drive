@@ -2,62 +2,61 @@
 This project aims to analyze and predict donation bag collections based on historical Food Drive data from 2023 and 2024. Using various regression models, we identify trends, optimize predictions, and improve data-driven decision-making for future donation drives.
 
 # Key Features:
-- Data Cleaning & Preprocessing using Pandas
-- Feature Engineering for enhanced predictions
-- Multiple Regression Models (Linear Regression, Decision Tree, Random Forest)
-- Hyperparameter Tuning for optimal performance
-- Model Evaluation & Selection based on R² Score
-- Final Prediction Using the Best Model
-- API for prediction using Flask
+✅ Data Preprocessing with Pandas
+
+🔍 Feature Engineering for better model performance
+
+🤖 Multiple Regression Models: Linear Regression, Decision Tree, Random Forest
+
+🛠️ Hyperparameter Tuning using GridSearchCV
+
+📊 Model Evaluation with R², MSE, and MAE
+
+🏆 Best Model Selection and saving
+
+🌐 Flask API for real-time predictions
+
+📈 MLflow for experiment tracking
+
+📊 Prometheus & Grafana for model and system monitoring
+
+🐳 Docker & Docker Compose for containerized deployment
 
 # Project Structure:
 
 
 VISUAL-STUDIO-CODE_FOOD-DRIVE/
 
-│── ml_project/
+Visual-Studio-Code_Food-Drive/
+│
+├── data/
+│   ├── raw/                  # Unprocessed input CSV files
+│   ├── external/             # Assessed value & geo data
+│   └── processed/            # Cleaned datasets
+│
+├── models/                   # Saved trained models (.pkl)
+├── reports/                  # Feature importance, heatmaps
+├── src/                      # Core ML scripts
+│   ├── preprocess.py
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── predict_api.py
+│   ├── predict.py
+│   ├── logging_config.py
+│   └── utils/monitoring.py   # Monitoring utilities
+│
+├── configs/                  # YAML config files for training & prediction
+├── logs/                     # App & training logs
+│
+├── requirements.txt          # Python dependencies
+├── Dockerfile.mlapp          # Flask app Dockerfile
+├── Dockerfile.mlflow         # MLflow Dockerfile
+├── Dockerfile.train          # Model training Dockerfile
+├── docker-compose.yml        # Multi-container orchestration
+├── API_DOCUMENTATION.md      # API usage examples
+├── Makefile
+└── README.md                 # Project overview
 
-│   ├── data/                   # Data Directory
-
-│   │   ├── raw/                # Raw CSV Files (Unprocessed)
-
-│   │   ├── external/           # External Datasets (Property Assessment)
-
-│   │   ├── processed/          # Cleaned & Processed Datasets
-
-│   ├── models/                 # Saved Machine Learning Models
-
-│   ├── reports                 # Saved Feature Importance & Heatmap
-
-│   ├── src/                    # Source Code for ML Pipeline
-
-│   │   ├── preprocess.py       # Data Preprocessing & Cleaning
-
-│   │   ├── train.py            # Model Training & Saving
-
-│   │   ├── evaluate.py         # Model Evaluation & Best Model Selection
-
-|   |   |── predict_api.py      # Flask API for Predictions
-
-│   │   ├── predict.py          # Making Predictions using Best Model
-
-│   │   ├── logging_config.py   # Logging config
-
-│── API_DOCUMENTATION.md        # Overview and process how to run the Flask prediction
-
-│── README.md                   # Project Documentation
-
-│── Makefile
-
-│── requirements.txt            # Dependencies & Libraries
-
-│── Dockerfile.mlapp            # Dockerfile for ML Application
-
-│── Dockerfile.mlflow           # Dockerfile for MLFlow Server
-
-│── Dockerfile.train            # Dockerfile for MLFlow Server
-
-│── Docker-compose.yml          # Docker Compose file for Multi-Container Setup
 
 
 Dataset:
@@ -81,28 +80,31 @@ docker ps
 API Endpoints
 
 Health Check:
-- Endpoint: /health_status
+- Endpoint: GET /health_status
 - Method: GET
 - Description: Check if the API is running
-- Example curl http://127.0.0.1:5000/health_status
+- Example curl http://127.0.0.1:5001/health_status
 
 Prediction (v1):
 - Endpoint: /v1/predict
 - Method: POST
 - Description: Predict donation bags using model version 1 as Best_model - Linear Regression
-- Example curl http://127.0.0.1.5000/v1/predict
+- Example curl http://127.0.0.1.5001/v1/predict
 
 Prediction (v2):
 - Endpoint: /v2/predict
 - Method: POST
 - Description: Predict donation bags using model version 2 as Random_Forest
-- Example curl http://127.0.0.1.5000/v2/predict
+- Example curl http://127.0.0.1.5001/v2/predict
 
-MLflow Integration
+MLflow Integration: Automatically logs: parameters, metrics, and model artifacts for each run
 Experiment Tracking:
-- The MLflow server is accessible at http://127.0.0.1.5001
+- The MLflow server is accessible at http://localhost:5002
 - All experiments and runs are logged the experiment name CMPT2500
 
 Docker Hub links:
 - ML Application Image: https://hub.docker.com/repository/docker/hanghongmy/ml-application
 - MLflow Images: https://hub.docker.com/repository/docker/hanghongmy/mlflow
+
+📬 Contact
+If you encounter issues or have suggestions, feel free to open an issue or reach out via GitHub.
