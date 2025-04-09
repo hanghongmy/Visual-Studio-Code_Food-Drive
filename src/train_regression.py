@@ -3,6 +3,7 @@ import time
 import logging
 from logging.handlers import RotatingFileHandler
 from utils.monitoring import RegressionMonitor
+from threading import Thread
 
 """
 Regression training script with monitoring and logging. This used for train a regression model.
@@ -16,8 +17,10 @@ Regression training script with monitoring and logging. This used for train a re
 """
 
 # Initialize the RegressionMonitor
-monitor = RegressionMonitor(port=8004)
+monitor = RegressionMonitor(port=8002)
 
+# Start Prometheus metrics server on Port 8002
+start_http_server(8002)
 # Configure logging
 log_directory = 'logs'
 os.makedirs(log_directory, exist_ok=True)
@@ -38,6 +41,26 @@ logger = logging.getLogger('ml_app.regression')
 logger.addHandler(file_handler)
 
 logger.info("Starting regression training process...")
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Define a route to expose metrics
+@app.route('/metrics', methods=['GET'])
+def get_metrics():
+    monitor.flask_requests.inc()  # Increment the Flask HTTP requests counter
+    return jsonify(monitor.get_metrics())
+
+# Function to run Flask app in a separate thread
+def run_flask_app():
+    app.run(port=5000, debug=False)
+
+# Start Flask app in a separate thread
+flask_thread = Thread(target=run_flask_app)
+flask_thread.daemon = True
+flask_thread.start()
+
+logger.info("Flask metrics server started on port 5000.")
 
 # Simulate training process
 for epoch in range(10):
@@ -64,5 +87,12 @@ for epoch in range(10):
     r_squared = 0.9 + 0.01 * epoch
     monitor.record_metrics(mse=mse, rmse=rmse, mae=mae, r_squared=r_squared)
     logger.info(f"Epoch {epoch + 1}: MSE = {mse:.4f}, RMSE = {rmse:.4f}, MAE = {mae:.4f}, R² = {r_squared:.4f}")
+    # Update metrics one last time
+    monitor.record_metrics(mse=mse, rmse=rmse, mae=mae, r_squared=r_squared)
 
 logger.info("Regression training process completed.")
+
+if __name__ == "__main__":
+    logger.info("Training completed. Keeping the application running to expose metrics.")
+    while True:
+        time.sleep(1)

@@ -11,3 +11,4 @@ mlruns/
 configs/
 predictions/Food_Drive_2024_Predictions.csv
 prometheus/prometheus.yml
+logs/

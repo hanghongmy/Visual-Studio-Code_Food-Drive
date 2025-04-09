@@ -1,28 +1,61 @@
 {
-    "dashboard": {
-      "id": null,
-      "title": "Prediction API Metrics",
-      "panels": [
-        {
+  "id": null,
+  "uid": "predict-api-dashboard",
+  "title": "Enhanced Prediction API Metrics",
+  "timezone": "browser",
+  "schemaVersion": 30,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+      {
           "type": "graph",
           "title": "Prediction Requests",
           "targets": [
-            {
-              "expr": "model_prediction_requests_total",
-              "legendFormat": "{{model_version}} - {{status}}"
-            }
+              {
+                  "expr": "model_prediction_requests_total",
+                  "legendFormat": "{{model_version}} - {{status}}"
+              }
           ]
-        },
-        {
+      },
+      {
           "type": "graph",
-          "title": "Prediction Time",
+          "title": "Prediction Time (95th Percentile)",
           "targets": [
-            {
-              "expr": "histogram_quantile(0.95, sum(rate(model_prediction_duration_seconds_bucket[5m])) by (le))",
-              "legendFormat": "Latency (95th Percentile)"
-            }
+              {
+                  "expr": "histogram_quantile(0.95, sum(rate(model_prediction_duration_seconds_bucket[5m])) by (le))",
+                  "legendFormat": "Latency (95th Percentile)"
+              }
           ]
-        }
-      ]
-    }
-  }
+      },
+      {
+          "type": "graph",
+          "title": "Flask HTTP Requests",
+          "targets": [
+              {
+                  "expr": "flask_http_requests_total",
+                  "legendFormat": "Total Requests"
+              }
+          ]
+      },
+      {
+          "type": "graph",
+          "title": "Application CPU Usage",
+          "targets": [
+              {
+                  "expr": "app_cpu_usage_percent",
+                  "legendFormat": "CPU Usage (%)"
+              }
+          ]
+      },
+      {
+          "type": "graph",
+          "title": "Training Loss",
+          "targets": [
+              {
+                  "expr": "training_loss",
+                  "legendFormat": "Loss"
+              }
+          ]
+      }
+  ]
+}

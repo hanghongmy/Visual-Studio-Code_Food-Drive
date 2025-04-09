@@ -1,20 +1,27 @@
 # Dockerfile is used to containerize the ML application
 
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim
+FROM python:3.9-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy requirements file
-COPY requirements.txt .
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install numpy==1.26.4  # Explicitly install numpy first
+RUN pip install -r requirements.txt
 
 # Create logs directory
 RUN mkdir -p /app/logs
+
+# Copy application code
+COPY . .
 
 # Copy only the necessary files for your application
 COPY src/ /app/src/
@@ -23,11 +30,13 @@ COPY configs/ /app/configs/
 COPY data/ /app/data/
 
 # Expose the port your Flask API will run on
-EXPOSE 5000
+EXPOSE 5001
 
 # Set environment variables for MLflow
 ENV MLFLOW_TRACKING_URI=http://mlflow:5001
 ENV LOG_DIR=/app/logs
 
-# Command to run your prediction API
-CMD ["python", "src/predict_api.py"]
+
+# Set the working directory and entry point
+WORKDIR /app
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5001"]

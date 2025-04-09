@@ -34,6 +34,11 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
+start_http_server(9000)
+
+REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests to the API")
+
+
 
 # Add a rotating file handler for the predict module
 file_handler = RotatingFileHandler(
@@ -62,7 +67,7 @@ prediction_time = Histogram(
 )
 memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application')
 cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
-
+disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application')
 # Load configuration
 config_path = "configs/predict_config.yaml"
 if not os.path.exists(config_path):
@@ -93,7 +98,7 @@ if not feature_columns:
 def root():
     """Root endpoint to redirect to /food_drive_home"""
     return jsonify({
-        "message": "Welcome to the Food Drive Prediction API. Visit /food_drive_home for more information."
+        "message": "Welcome to the Food Drive Prediction API. Try making a prediction for the experiment."
     })
 
 @app.route('/food_drive_home', methods=['GET'])
@@ -132,6 +137,7 @@ def validate_input(data):
 @app.route('/v1/predict', methods=['POST'])
 def predict_v1():
     """Predict endpoint using model version 1"""
+    REQUEST_COUNT.inc()
     start_time = time.time()
     model_version = "v1"
     
@@ -168,6 +174,7 @@ def predict_v1():
 @app.route('/v2/predict', methods=['POST'])
 def predict_v2():
     """Predict endpoint using model version 2"""
+    REQUEST_COUNT.inc()
     start_time = time.time()
     model_version = "v2"
     
@@ -206,6 +213,7 @@ def monitor_resources():
         process = psutil.Process(os.getpid())
         memory_usage.set(process.memory_info().rss)  # in bytes
         cpu_usage.set(process.cpu_percent())
+        disk_usage.set(psutil.disk_usage('/').used) 
         time.sleep(15)      
 
 @app.route('/metrics', methods=['GET'])
@@ -217,10 +225,10 @@ if __name__ == "__main__":
     logger.info("Starting API server...")
 
     # Start Prometheus metrics server
-    threading.Thread(target=start_http_server, args=(5001,), daemon=True).start()
+    threading.Thread(target=start_http_server, args=(8010,), daemon=True).start()
     
     # Start resource monitoring in a separate thread
     threading.Thread(target=monitor_resources, daemon=True).start()
 
     # Start Flask app
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)

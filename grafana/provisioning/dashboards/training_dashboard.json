@@ -38,6 +38,38 @@
         "w": 12,
         "h": 8
       }
+    },
+    {
+      "type": "graph",
+      "title": "Prediction v1 Accuracy",
+      "targets": [
+        {
+          "expr": "prediction_v1_accuracy",
+          "legendFormat": "Prediction v1 Accuracy"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Prediction v2 Accuracy",
+      "targets": [
+        {
+          "expr": "prediction_v2_accuracy",
+          "legendFormat": "Prediction v2 Accuracy"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      }
     }
   ]
 }

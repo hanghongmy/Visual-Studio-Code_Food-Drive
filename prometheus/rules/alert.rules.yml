@@ -1,0 +1,50 @@
+# alert.rules.yml
+groups:
+  - name: prediction-api-alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: app_memory_usage_bytes > 500000000  # 500 MB
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 500 MB for more than 1 minute."
+
+      - alert: HighCPUUsage
+        expr: app_cpu_usage_percent > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 1 minute."
+
+      - alert: HighErrorRate
+        expr: rate(flask_http_requests_total{status="500"}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate in Prediction API"
+          description: "More than 5% of requests are failing with 500 errors."
+          
+  - name: model-training-alerts
+    rules:
+      - alert: HighTrainingLoss
+        expr: training_loss > 0.5
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High training loss detected"
+          description: "Training loss is above 0.5 for more than 5 minutes."
+
+      - alert: LowValidationAccuracy
+        expr: validation_accuracy < 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low validation accuracy detected"
+          description: "Validation accuracy is below 80% for more than 5 minutes."

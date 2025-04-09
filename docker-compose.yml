@@ -8,17 +8,30 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.mlapp
+    container_name: app
     ports:
-      - "5001:5000"
+      - "9000:9000"
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./logs:/app/logs
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - FLASK_APP=src/predict_api.py
+    working_dir: /app
+    command: flask run --host=0.0.0.0 --port=9000
     networks:
       - ml-network
-
+  train-metrics:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlapp
+    container_name: train-metrics
+    ports:
+      - "8002:8002"
+    networks:
+      - ml-network
+    command: python src/train.py
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest
@@ -29,7 +42,8 @@ services:
       - ./mlruns:/mlflow/artifacts
     environment:
       - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow.db
-      - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/artifacts=value
+      - MLFLOW_ARTIFACT_ROOT=/mlflow/artifacts
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlflow/artifacts
     networks:
       - ml-network
 
@@ -48,13 +62,8 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.enable-lifecycle'
-    # Add extra_host to allow accessing host from container
-    extra_hosts:
-      host.docker.internal: host-gateway
     networks:
       - ml-network
-    depends_on:
-      - ml-app
 
   grafana:
     image: grafana/grafana:latest
@@ -63,7 +72,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
-      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_ALLOW_SIGN_UP=true
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -71,23 +80,6 @@ services:
       - ml-network
     depends_on:
       - prometheus
-
-  train:
-    build:
-      context: .
-      dockerfile: Dockerfile.mlapp
-    ports:
-      - "8003:8003"
-    environment:
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
-    volumes:
-      - ./data:/app/data
-      - ./models:/app/models
-      - ./logs:/app/logs
-      - ./mlruns:/mlflow/artifacts
-    command: ["python", "src/train.py"]
-    networks:
-        - ml-network
 
 networks:
   ml-network:

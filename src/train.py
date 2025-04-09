@@ -13,35 +13,24 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from utils.monitoring import TrainingMonitor
 from prometheus_client import start_http_server, Counter, Gauge
-from logging_handlers import RotatingFileHandler
+import time
 
 # Configure logging
-log_directory = 'logs'
-os.makedirs(log_directory, exist_ok=True)
 logging.basicConfig(
+    filename='logs/train.log',
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s'
 )
-
-# Add a rotating file handler for the train module
-file_handler = RotatingFileHandler(
-    f'{log_directory}/train.log',
-    maxBytes=10485760,  # 10MB
-    backupCount=5  # Keep up to 5 backup files
-)
-file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger = logging.getLogger('ml_app.train')
-logger.addHandler(file_handler)
-
 # Start Prometheus metrics server on port 8002
-start_http_server(8003)
+start_http_server(8010)
 
 # Define Prometheus metrics
 training_loss = Gauge('training_loss', 'Training loss')
 validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy')
 epoch_count = Counter('epoch_count', 'Number of epochs completed')
+training_request_count = Counter('training_request_count', 'Number of training requests')
 
-logger.info("Training script started.")
 
 # Set the MLflow tracking URI to the mlflow service in the Docker Compose network
 mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
@@ -110,6 +99,7 @@ class Trainer:
             df.dropna(how='all', inplace=True)  # Drop fully empty rows
             numeric_cols = df.select_dtypes(include=['number']).columns
             df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())  # Fill numeric NaNs
+            df[numeric_cols] = df[numeric_cols].astype(float)
             categorical_cols = df.select_dtypes(include=['object']).columns
             df[categorical_cols] = df[categorical_cols].fillna("Unknown")  # Fill categorical NaNs
 
@@ -148,8 +138,6 @@ class Trainer:
                 validation_accuracy.set(r2)
             
                 logger.info(f"Epoch {epoch} - {model_name} - MSE: {mse:.2f}, R² Score: {r2:.4f}")
-
-
 
             result = {
                 "Model": model_name + ("_Tuned" if tuned else ""),
@@ -221,10 +209,14 @@ class Trainer:
 
 if __name__ == "__main__":
     logger.info("Starting training script...")
-    # Start Promethrues metrics server
-    #start_http_server(8003)
-    logger.info("Training started...")
-    logger.info("Training completed")
+
+    # Start Prometheus metrics server on port 8002
+    start_http_server(8002)
+
+    # Initialize and run the training pipeline
     trainer = Trainer(config_path="configs/train_config.yaml")
     trainer.train_pipeline()
-    #subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    logger.info("Training completed")
+    # Keep the application running to expose metrics
+    while True:
+        time.sleep(1)   

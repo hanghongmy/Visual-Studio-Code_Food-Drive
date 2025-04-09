@@ -10,6 +10,8 @@
 
 
 from prometheus_client import Gauge, Counter, start_http_server
+import psutil
+import os
 import time
 import logging
 
@@ -26,6 +28,9 @@ class TrainingMonitor:
         self.validation_loss = Gauge('validation_loss', 'Current validation loss')
         self.accuracy = Gauge('validation_accuracy', 'Current validation accuracy')
         self.custom_metric = Gauge('custom_metric_name', 'Description of the custom metric')
+        self.cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
+        # Add a new Counter for Flask HTTP requests
+        self.flask_requests = Counter('flask_http_requests_total', 'Total number of HTTP requests handled by Flask')
 
 
     def record_epoch(self):
@@ -118,15 +123,27 @@ class TreeModelMonitor(TrainingMonitor):
         self.trees_count.set(0)
         self.iteration_improvement.set(0)
         logger.info("Tree-based metrics have been reset.")
+class SystemMonitor:
+    """Monitoring for system resource usage."""
+    def __init__(self):
+        self.memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application')
+        self.cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
+        self.disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application')
+
+    def update_metrics(self):
+        """Update system resource metrics."""
+        process = psutil.Process(os.getpid())
+        self.memory_usage.set(process.memory_info().rss)
+        self.cpu_usage.set(process.cpu_percent())
+        self.disk_usage.set(psutil.disk_usage('/').used)
 
 if __name__ == "__main__":
-    monitor = TrainingMonitor(port=8002)
-    monitor.record_epoch()
-    monitor.record_batch()
-    monitor.record_loss(0.25)
-    monitor.record_validation_metrics(loss=0.2, accuracy=0.85)
-    monitor.record_custom_metric(42)
+    monitor = RegressionMonitor(port=8004)
+    monitor.record_metrics(mse=0.1, rmse=0.316, mae=0.2, r_squared=0.95, feature_importance={"feature1": 0.8, "feature2": 0.6})
 
-    # Keep the application running to expose metrics
+    system_monitor = SystemMonitor()
+
+    # Update system metrics periodically
     while True:
-        time.sleep(1)
+        system_monitor.update_metrics()
+        time.sleep(5)

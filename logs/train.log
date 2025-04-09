@@ -82,3 +82,51 @@
 2025-04-03 22:43:31,433 - INFO - Training script started.
 2025-04-03 22:48:09,456 - ERROR - Failed to connect to MLflow server: API request to http://mlflow:5000/api/2.0/mlflow/experiments/get-by-name failed with exception HTTPConnectionPool(host='mlflow', port=5000): Max retries exceeded with url: /api/2.0/mlflow/experiments/get-by-name?experiment_name=CMPT2500 (Caused by NameResolutionError("<urllib3.connection.HTTPConnection object at 0x7f76fc7c1f00>: Failed to resolve 'mlflow' ([Errno -2] Name or service not known)"))
 2025-04-03 22:48:09,456 - INFO - Ensure the MLflow server is running and the MLFLOW_TRACKING_URI is set correctly.
+2025-04-08 23:41:35,026 - INFO - Starting training script...
+2025-04-08 23:44:27,956 - INFO - Starting training script...
+2025-04-08 23:45:22,679 - INFO - Starting training script...
+2025-04-08 23:45:23,133 - INFO - Starting training pipeline...
+2025-04-08 23:45:23,133 - ERROR - Error loading data: [Errno 2] No such file or directory: 'data/processed/Food_Drive_2023_Processed.csv'
+2025-04-08 23:46:36,452 - INFO - Starting training script...
+2025-04-08 23:46:38,874 - INFO - Starting training pipeline...
+2025-04-08 23:46:40,083 - INFO - Step 1: Training data loaded from data/processed/Food_Drive_2023_Processed.csv (450 rows).
+2025-04-08 23:46:40,083 - INFO - Step 1: Testing data loaded from data/processed/Food_Drive_2024_Processed.csv (484840 rows).
+2025-04-08 23:46:40,920 - INFO - Step 2: Missing values handled - Numeric with median, Categorical with 'Unknown'.
+2025-04-08 23:46:40,924 - INFO - Step 3: Data prepared for training.
+2025-04-08 23:46:40,924 - INFO - Training Linear_Regression without tuning...
+2025-04-08 23:46:41,255 - INFO - Epoch 1 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:46:41,359 - INFO - Epoch 2 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:46:41,454 - INFO - Epoch 3 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:46:41,546 - INFO - Epoch 4 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:46:41,650 - INFO - Epoch 5 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:46:41,651 - INFO - Model 'Linear_Regression' saved to models/Linear_Regression.pkl.
+2025-04-08 23:46:41,711 - INFO - Training Decision_Tree without tuning...
+2025-04-08 23:46:41,849 - INFO - Epoch 1 - Decision_Tree - MSE: 2346.70, R² Score: -0.1067
+2025-04-08 23:46:41,913 - INFO - Epoch 2 - Decision_Tree - MSE: 2427.88, R² Score: -0.1450
+2025-04-08 23:46:41,978 - INFO - Epoch 3 - Decision_Tree - MSE: 2393.48, R² Score: -0.1288
+2025-04-08 23:46:42,046 - INFO - Epoch 4 - Decision_Tree - MSE: 2340.79, R² Score: -0.1040
+2025-04-08 23:46:42,105 - INFO - Epoch 5 - Decision_Tree - MSE: 6899.64, R² Score: -2.2540
+2025-04-08 23:46:42,107 - INFO - Model 'Decision_Tree' saved to models/Decision_Tree.pkl.
+2025-04-08 23:46:42,130 - INFO - Hyperparameter tuning for Decision_Tree...
+2025-04-08 23:46:46,860 - INFO - Best hyperparameters for Decision_Tree: {'max_depth': 3}
+2025-04-08 23:46:47,013 - INFO - Epoch 1 - Decision_Tree - MSE: 1957.27, R² Score: 0.0769
+2025-04-08 23:46:47,080 - INFO - Epoch 2 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:46:47,145 - INFO - Epoch 3 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:46:47,250 - INFO - Epoch 4 - Decision_Tree - MSE: 1957.27, R² Score: 0.0769
+2025-04-08 23:46:47,418 - INFO - Epoch 5 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:46:47,420 - INFO - Model 'Decision_Tree_Tuned' saved to models/Decision_Tree_Tuned.pkl.
+2025-04-08 23:46:47,452 - INFO - Training Random_Forest without tuning...
+2025-04-08 23:46:48,762 - INFO - Epoch 1 - Random_Forest - MSE: 2531.28, R² Score: -0.1938
+2025-04-08 23:46:49,957 - INFO - Epoch 2 - Random_Forest - MSE: 2505.76, R² Score: -0.1818
+2025-04-08 23:46:51,340 - INFO - Epoch 3 - Random_Forest - MSE: 2598.13, R² Score: -0.2253
+2025-04-08 23:46:52,872 - INFO - Epoch 4 - Random_Forest - MSE: 2874.41, R² Score: -0.3556
+2025-04-08 23:46:54,274 - INFO - Epoch 5 - Random_Forest - MSE: 2767.00, R² Score: -0.3050
+2025-04-08 23:46:54,352 - INFO - Model 'Random_Forest' saved to models/Random_Forest.pkl.
+2025-04-08 23:46:54,396 - INFO - Hyperparameter tuning for Random_Forest...
+2025-04-08 23:46:59,591 - INFO - Best hyperparameters for Random_Forest: {'max_depth': 10, 'n_estimators': 100}
+2025-04-08 23:47:00,911 - INFO - Epoch 1 - Random_Forest - MSE: 2624.95, R² Score: -0.2380
+2025-04-08 23:47:02,090 - INFO - Epoch 2 - Random_Forest - MSE: 2534.32, R² Score: -0.1952
+2025-04-08 23:47:03,202 - INFO - Epoch 3 - Random_Forest - MSE: 2548.22, R² Score: -0.2018
+2025-04-08 23:47:04,380 - INFO - Epoch 4 - Random_Forest - MSE: 2548.65, R² Score: -0.2020
+2025-04-08 23:47:05,441 - INFO - Epoch 5 - Random_Forest - MSE: 2706.42, R² Score: -0.2764
+2025-04-08 23:47:05,468 - INFO - Model 'Random_Forest_Tuned' saved to models/Random_Forest_Tuned.pkl.
