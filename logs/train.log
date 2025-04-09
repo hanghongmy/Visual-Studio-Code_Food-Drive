@@ -222,3 +222,51 @@
 2025-04-08 23:51:26,792 - INFO - Epoch 4 - Random_Forest - MSE: 2489.02, R² Score: -0.1739
 2025-04-08 23:51:27,120 - INFO - Epoch 5 - Random_Forest - MSE: 2195.70, R² Score: -0.0355
 2025-04-08 23:51:27,127 - INFO - Model 'Random_Forest_Tuned' saved to models/Random_Forest_Tuned.pkl.
+2025-04-08 23:51:30,062 - ERROR - DVC tracking failed: Command '['dvc', 'push']' returned non-zero exit status 255.
+2025-04-08 23:51:30,063 - INFO - Training pipeline complete.
+2025-04-08 23:51:30,063 - INFO - Training completed
+2025-04-08 23:58:21,147 - INFO - Starting training script...
+2025-04-08 23:58:21,368 - INFO - Starting training pipeline...
+2025-04-08 23:58:21,801 - INFO - Step 1: Training data loaded from data/processed/Food_Drive_2023_Processed.csv (450 rows).
+2025-04-08 23:58:21,801 - INFO - Step 1: Testing data loaded from data/processed/Food_Drive_2024_Processed.csv (484840 rows).
+2025-04-08 23:58:22,062 - INFO - Step 2: Missing values handled - Numeric with median, Categorical with 'Unknown'.
+2025-04-08 23:58:22,065 - INFO - Step 3: Data prepared for training.
+2025-04-08 23:58:22,065 - INFO - Training Linear_Regression without tuning...
+2025-04-08 23:58:22,346 - INFO - Epoch 1 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:58:22,451 - INFO - Epoch 2 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:58:22,541 - INFO - Epoch 3 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:58:22,649 - INFO - Epoch 4 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:58:22,737 - INFO - Epoch 5 - Linear_Regression - MSE: 1957.96, R² Score: 0.0766
+2025-04-08 23:58:22,738 - INFO - Model 'Linear_Regression' saved to models/Linear_Regression.pkl.
+2025-04-08 23:58:22,843 - INFO - Training Decision_Tree without tuning...
+2025-04-08 23:58:22,970 - INFO - Epoch 1 - Decision_Tree - MSE: 2421.30, R² Score: -0.1419
+2025-04-08 23:58:23,043 - INFO - Epoch 2 - Decision_Tree - MSE: 6970.27, R² Score: -2.2873
+2025-04-08 23:58:23,104 - INFO - Epoch 3 - Decision_Tree - MSE: 6959.94, R² Score: -2.2824
+2025-04-08 23:58:23,174 - INFO - Epoch 4 - Decision_Tree - MSE: 6895.24, R² Score: -2.2519
+2025-04-08 23:58:23,236 - INFO - Epoch 5 - Decision_Tree - MSE: 6957.53, R² Score: -2.2813
+2025-04-08 23:58:23,237 - INFO - Model 'Decision_Tree' saved to models/Decision_Tree.pkl.
+2025-04-08 23:58:23,269 - INFO - Hyperparameter tuning for Decision_Tree...
+2025-04-08 23:58:24,902 - INFO - Best hyperparameters for Decision_Tree: {'max_depth': 3}
+2025-04-08 23:58:25,032 - INFO - Epoch 1 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:58:25,101 - INFO - Epoch 2 - Decision_Tree - MSE: 1957.27, R² Score: 0.0769
+2025-04-08 23:58:25,161 - INFO - Epoch 3 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:58:25,241 - INFO - Epoch 4 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:58:25,311 - INFO - Epoch 5 - Decision_Tree - MSE: 1999.92, R² Score: 0.0568
+2025-04-08 23:58:25,312 - INFO - Model 'Decision_Tree_Tuned' saved to models/Decision_Tree_Tuned.pkl.
+2025-04-08 23:58:25,345 - INFO - Training Random_Forest without tuning...
+2025-04-08 23:58:26,368 - INFO - Epoch 1 - Random_Forest - MSE: 2808.30, R² Score: -0.3244
+2025-04-08 23:58:27,300 - INFO - Epoch 2 - Random_Forest - MSE: 2651.32, R² Score: -0.2504
+2025-04-08 23:58:28,264 - INFO - Epoch 3 - Random_Forest - MSE: 2724.98, R² Score: -0.2851
+2025-04-08 23:58:29,215 - INFO - Epoch 4 - Random_Forest - MSE: 2425.31, R² Score: -0.1438
+2025-04-08 23:58:30,161 - INFO - Epoch 5 - Random_Forest - MSE: 2531.67, R² Score: -0.1940
+2025-04-08 23:58:30,179 - INFO - Model 'Random_Forest' saved to models/Random_Forest.pkl.
+2025-04-08 23:58:30,207 - INFO - Hyperparameter tuning for Random_Forest...
+2025-04-08 23:58:32,347 - INFO - Best hyperparameters for Random_Forest: {'max_depth': 10, 'n_estimators': 100}
+2025-04-08 23:58:33,386 - INFO - Epoch 1 - Random_Forest - MSE: 2676.60, R² Score: -0.2623
+2025-04-08 23:58:34,369 - INFO - Epoch 2 - Random_Forest - MSE: 2621.89, R² Score: -0.2365
+2025-04-08 23:58:35,331 - INFO - Epoch 3 - Random_Forest - MSE: 2535.97, R² Score: -0.1960
+2025-04-08 23:58:36,297 - INFO - Epoch 4 - Random_Forest - MSE: 2345.86, R² Score: -0.1063
+2025-04-08 23:58:37,307 - INFO - Epoch 5 - Random_Forest - MSE: 2669.35, R² Score: -0.2589
+2025-04-08 23:58:37,373 - INFO - Model 'Random_Forest_Tuned' saved to models/Random_Forest_Tuned.pkl.
+2025-04-08 23:58:37,398 - INFO - Training pipeline complete.
+2025-04-08 23:58:37,398 - INFO - Training completed

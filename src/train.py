@@ -181,22 +181,6 @@ class Trainer:
                 tuned_model = self.hypertune_model(model_name, model)
                 self.train_model(model_name, tuned_model, tuned=True)
 
-    def track_data_with_dvc(self):
-        """Step 5: Track processed data with DVC."""
-        try:
-            subprocess.run(["dvc", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
-            subprocess.run(["dvc", "add", self.train_data_path], check=True)
-            subprocess.run(["dvc", "add", self.test_data_path], check=True)
-            subprocess.run(["git", "add", "."], check=True)
-            subprocess.run(["git", "commit", "-m", "Updated processed dataset"], check=True)
-            subprocess.run(["dvc", "push"], check=True)
-            logger.info("Step 5: Processed data tracked and pushed with DVC.")
-        except subprocess.CalledProcessError as e:
-            logger.error(f"DVC tracking failed: {e}")
-        except FileNotFoundError:
-            logger.error("DVC is not installed. Please install DVC to track data. Using make init-dvc to install")
-
     def train_pipeline(self):
         """Run the full training pipeline."""
         logger.info("Starting training pipeline...")
@@ -204,7 +188,6 @@ class Trainer:
         self.handle_missing_value()
         self.prepare_data()
         self.train_models()
-        self.track_data_with_dvc()
         logger.info("Training pipeline complete.")
 
 if __name__ == "__main__":
