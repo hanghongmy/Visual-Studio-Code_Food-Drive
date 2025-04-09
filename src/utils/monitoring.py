@@ -13,8 +13,6 @@ from prometheus_client import Gauge, Counter, start_http_server
 import psutil
 import os
 import time
-import logging
-from prometheus_client import Counter
 
 
 # Global Prometheus metrics
@@ -93,41 +91,39 @@ class RegressionMonitor(TrainingMonitor):
         self.rmse.set(0)
         self.mae.set(0)
         self.r_squared.set(0)
-        logger.info("Regression metrics have been reset.")
 
 
-class TreeModelMonitor(TrainingMonitor):
-    """Monitoring for tree-based models."""
-    def __init__(self, port=8005):
-        super().__init__(port)
-        self.tree_depth = Gauge('tree_max_depth', 'Maximum tree depth')
-        self.tree_leaves = Gauge('tree_leaf_count', 'Number of leaf nodes')
-        self.trees_count = Gauge('ensemble_tree_count', 'Number of trees in the ensemble')
-        self.boost_round = Counter('boosting_rounds_total', 'Total boosting rounds completed')
-        self.iteration_improvement = Gauge('iteration_improvement', 'Performance improvement in the last iteration')
+#class TreeModelMonitor(TrainingMonitor):
+#    """Monitoring for tree-based models."""
+#    def __init__(self, port=8005):
+#        super().__init__(port)
+#        self.tree_depth = Gauge('tree_max_depth', 'Maximum tree depth')
+#        self.tree_leaves = Gauge('tree_leaf_count', 'Number of leaf nodes')
+#        self.trees_count = Gauge('ensemble_tree_count', 'Number of trees in the ensemble')
+#        self.boost_round = Counter('boosting_rounds_total', 'Total boosting rounds completed')
+#        self.iteration_improvement = Gauge('iteration_improvement', 'Performance improvement in the last iteration')
 
-    def record_tree_metrics(self, depth=None, leaves=None, trees=None):
-        """Record tree structure metrics."""
-        if depth is not None:
-            self.tree_depth.set(depth)
-        if leaves is not None:
-            self.tree_leaves.set(leaves)
-        if trees is not None:
-            self.trees_count.set(trees)
+#    def record_tree_metrics(self, depth=None, leaves=None, trees=None):
+#        """Record tree structure metrics."""
+#        if depth is not None:
+#            self.tree_depth.set(depth)
+#        if leaves is not None:
+#            self.tree_leaves.set(leaves)
+#        if trees is not None:
+#            self.trees_count.set(trees)
 
-    def record_boost_round(self, improvement=None):
-        """Record a completed boosting round."""
-        self.boost_round.inc()
-        if improvement is not None:
-            self.iteration_improvement.set(improvement)
+#    def record_boost_round(self, improvement=None):
+#        """Record a completed boosting round."""
+#        self.boost_round.inc()
+#        if improvement is not None:
+#            self.iteration_improvement.set(improvement)
 
-    def reset_tree_metrics(self):
-        """Reset all tree-based metrics to their default state."""
-        self.tree_depth.set(0)
-        self.tree_leaves.set(0)
-        self.trees_count.set(0)
-        self.iteration_improvement.set(0)
-        logger.info("Tree-based metrics have been reset.")
+#    def reset_tree_metrics(self):
+#        """Reset all tree-based metrics to their default state."""
+#        self.tree_depth.set(0)
+#        self.tree_leaves.set(0)
+#        self.trees_count.set(0)
+#        self.iteration_improvement.set(0)
 class SystemMonitor:
     """Monitoring for system resource usage."""
     def __init__(self):
@@ -144,7 +140,8 @@ class SystemMonitor:
 
 if __name__ == "__main__":
     monitor = RegressionMonitor(port=8004)
-    monitor.record_metrics(mse=0.1, rmse=0.316, mae=0.2, r_squared=0.95, feature_importance={"feature1": 0.8, "feature2": 0.6})
+    monitor.record_metrics(mse=0.1, rmse=0.316, mae=0.2, r_squared=0.95,
+                            feature_importance={"feature1": 0.8, "feature2": 0.6})
 
     system_monitor = SystemMonitor()
 
