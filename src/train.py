@@ -11,10 +11,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
-from utils.monitoring import TrainingMonitor
+from utils.monitoring import validation_accuracy
 from prometheus_client import start_http_server, Counter, Gauge
 import time
-
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from utils.monitoring import training_loss, epoch_count, validation_accuracy
 # Configure logging
 logging.basicConfig(
     filename='logs/train.log',
@@ -24,13 +26,6 @@ logging.basicConfig(
 logger = logging.getLogger('ml_app.train')
 # Start Prometheus metrics server on port 8002
 start_http_server(8010)
-
-# Define Prometheus metrics
-training_loss = Gauge('training_loss', 'Training loss')
-validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy')
-epoch_count = Counter('epoch_count', 'Number of epochs completed')
-training_request_count = Counter('training_request_count', 'Number of training requests')
-
 
 # Set the MLflow tracking URI to the mlflow service in the Docker Compose network
 mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
@@ -169,6 +164,13 @@ class Trainer:
 
         return grid_search.best_estimator_
 
+    def evaluate_model(self):
+        """Evaluate the model and return validation accuracy."""
+        y_pred = self.models["Random_Forest"].predict(self.X_test)  # Example: using Random Forest
+        r2 = r2_score(self.y_test, y_pred)
+        logger.info(f"Validation R² Score: {r2:.4f}")
+        return r2
+
     def train_models(self):
         """Train models with and without hyperparameter tuning."""
         os.makedirs(self.models_dir, exist_ok=True)
@@ -189,6 +191,8 @@ class Trainer:
         self.prepare_data()
         self.train_models()
         logger.info("Training pipeline complete.")
+        val_accuracy = self.evaluate_model()
+        validation_accuracy.set(val_accuracy)
 
 if __name__ == "__main__":
     logger.info("Starting training script...")
@@ -202,4 +206,4 @@ if __name__ == "__main__":
     logger.info("Training completed")
     # Keep the application running to expose metrics
     while True:
-        time.sleep(1)   
+        time.sleep(1)

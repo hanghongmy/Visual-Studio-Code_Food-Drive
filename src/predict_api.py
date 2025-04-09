@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify, request
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import Counter, Histogram, Gauge
 from prometheus_client import start_http_server
+from utils.monitoring import validation_accuracy
 import matplotlib.pyplot as plt
 import time
 import psutil
@@ -34,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-start_http_server(9000)
+start_http_server(9000) 
 
 REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests to the API")
 
@@ -68,6 +69,7 @@ prediction_time = Histogram(
 memory_usage = Gauge('app_memory_usage_bytes', 'Memory usage of the application')
 cpu_usage = Gauge('app_cpu_usage_percent', 'CPU usage percentage of the application')
 disk_usage = Gauge('app_disk_usage_bytes', 'Disk usage of the application')
+validation_accuracy = Gauge('model_validation_accuracy', 'Validation accuracy of the model')
 # Load configuration
 config_path = "configs/predict_config.yaml"
 if not os.path.exists(config_path):
@@ -220,6 +222,17 @@ def monitor_resources():
 def metrics():
     return "Metrics endpoint"
 
+@app.route('/update_metrics', methods=['POST'])
+def update_metrics():
+    """Endpoint to update validation accuracy"""
+    data = request.json
+    if not data or 'validation_accuracy' not in data:
+        return jsonify({"error": "Missing 'validation_accuracy' in request data"}), 400
+
+    val_accuracy = data.get('validation_accuracy', 0.0)
+    validation_accuracy.set(val_accuracy)  # Update the Prometheus metric
+    logger.info(f"Validation accuracy updated to {val_accuracy}")
+    return jsonify({"message": f"Validation accuracy updated to {val_accuracy}"}), 200
 
 if __name__ == "__main__":
     logger.info("Starting API server...")
@@ -230,5 +243,5 @@ if __name__ == "__main__":
     # Start resource monitoring in a separate thread
     threading.Thread(target=monitor_resources, daemon=True).start()
 
-    # Start Flask app
+    # Start Flask app on a different port
     app.run(host="0.0.0.0", port=5001, debug=True)

@@ -15,6 +15,7 @@ services:
       - ./data:/app/data
       - ./models:/app/models
       - ./logs:/app/logs
+      - ./configs:/app/configs
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - FLASK_APP=src/predict_api.py

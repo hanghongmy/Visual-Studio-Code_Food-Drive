@@ -12,3 +12,5 @@ configs/
 predictions/Food_Drive_2024_Predictions.csv
 prometheus/prometheus.yml
 logs/
+logs/predict.log
+logs/train.log

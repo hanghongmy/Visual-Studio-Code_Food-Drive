@@ -14,8 +14,13 @@ import psutil
 import os
 import time
 import logging
+from prometheus_client import Counter
 
-logger = logging.getLogger(__name__)
+
+# Global Prometheus metrics
+validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy of the model')
+training_loss = Gauge('training_loss', 'Training loss of the model')
+epoch_count = Counter('training_epoch_total', 'Total number of epochs completed')
 
 class TrainingMonitor:
     """Base class for monitoring training processes."""
