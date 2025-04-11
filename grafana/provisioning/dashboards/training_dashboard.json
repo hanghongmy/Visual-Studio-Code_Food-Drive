@@ -70,6 +70,38 @@
         "w": 12,
         "h": 8
       }
+    },
+    {
+      "type": "graph",
+      "title": "Rate of Prediction Requests (5m)",
+      "targets": [
+        {
+          "expr": "rate(prediction_requests_total[5m])",
+          "legendFormat": "Requests per Second"
+        }
+      ],
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Average Prediction Latency (5m)",
+      "targets": [
+        {
+          "expr": "rate(prediction_duration_seconds_sum[5m]) / rate(prediction_duration_seconds_count[5m])",
+          "legendFormat": "Latency (seconds)"
+        }
+      ],
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      }
     }
   ]
 }
