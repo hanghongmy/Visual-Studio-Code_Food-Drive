@@ -91,5 +91,7 @@ logger.info("Regression training process completed.")
 
 if __name__ == "__main__":
     logger.info("Training completed. Keeping the application running to expose metrics.")
+    
+    app.run(host="0.0.0.0", port=8004, debug=True)
     while True:
         time.sleep(1)
