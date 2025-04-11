@@ -24,68 +24,41 @@ This project aims to analyze and predict donation bag collections based on histo
 
 # Project Structure:
 
-
+"""
 VISUAL-STUDIO-CODE_FOOD-DRIVE/
 
 Visual-Studio-Code_Food-Drive/
 
 │
-
 ├── data/
-
 │   ├── raw/                  # Unprocessed input CSV files
-
 │   ├── external/             # Assessed value & geo data
-
 │   └── processed/            # Cleaned datasets
-
 │
-
 ├── models/                   # Saved trained models (.pkl)
-
 ├── reports/                  # Feature importance, heatmaps
-
 ├── src/                      # Core ML scripts
-
 │   ├── preprocess.py
-
 │   ├── train.py
-
 │   ├── evaluate.py
-
 │   ├── predict_api.py
-
 │   ├── predict.py
-
 │   ├── logging_config.py
-
 │   └── utils/monitoring.py   # Monitoring utilities
-
 │
-
 ├── configs/                  # YAML config files for training & prediction
-
 ├── logs/                     # App & training logs
-
 │
-
 ├── requirements.txt          # Python dependencies
-
 ├── Dockerfile.mlapp          # Flask app Dockerfile
-
 ├── Dockerfile.mlflow         # MLflow Dockerfile
-
 ├── Dockerfile.train          # Model training Dockerfile
-
 ├── docker-compose.yml        # Multi-container orchestration
-
 ├── API_DOCUMENTATION.md      # API usage examples
-
 ├── Makefile
-
 └── README.md                 # Project overview
 
-
+"""
 
 
 Dataset:
