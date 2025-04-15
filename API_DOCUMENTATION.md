@@ -24,8 +24,12 @@ Make sure to replace `5000` with your actual **Flask port** if different.
 ### Description:**  
 Returns API usage information including available endpoints, required input format, and API description.
 
+
+PROMETHEUS_PORT=8023 FLASK_PORT=5003 python src/predict_api.py
+
+
 ### **🔹 cURL Command**
-curl -X GET http://127.0.0.1:5000/food_drive_home
+curl -X GET http://127.0.0.1:5003/food_drive_home
 
 #### Respone Format 
 {
@@ -49,7 +53,7 @@ curl -X GET http://127.0.0.1:5000/food_drive_home
 Checks if the API is running properly.
 
 🔹 cURL Command
-curl -X GET http://127.0.0.1:5000/health_status
+curl -X GET http://127.0.0.1:5003/health_status
 
 #### Response Format 
 {
@@ -70,7 +74,7 @@ Takes input features in JSON format and returns a prediction using Model V1.
 }
 
 🔹 cURL Command
-curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_in_route": 10, "assessed_value": 100000}' http://127.0.0.1:5001/v1/predict
+curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_in_route": 10, "assessed_value": 100000}' http://127.0.0.1:5003/v1/predict
 
 #### Response 
 {
@@ -94,7 +98,7 @@ Takes input features in JSON format and returns a prediction using Model V2.
 
 🔹 cURL Command
 
-curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_in_route": 10, "assessed_value": 100000}' http://127.0.0.1:5001/v2/predict
+curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_in_route": 10, "assessed_value": 100000}' http://127.0.0.1:5003/v2/predict
 
 #### Response 
 {
@@ -102,6 +106,9 @@ curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_
     12.201500237162701
   ]
 }
+
+# check_api.py
+PROMETHEUS_PORT=8023 FLASK_PORT=5003 python src/predict_api.py
 
 ## 5. Error Handling
 Error Handling and Responses
@@ -115,3 +122,7 @@ HTTP Code	 Message	                Description
 2. python predict_api.py
 3. By default, the app will run at: http://127.0.0.1:5000
 4. You can use the curl command to get the outcomes in the terminal and get the predictions. Change the values of the features according to choice but in the particular format. 
+
+# Running the Train.py
+
+MLFLOW_TRACKING_URI=http://127.0.0.1:5000 python src/train.py

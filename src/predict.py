@@ -8,14 +8,25 @@ import mlflow.sklearn
 import subprocess
 import matplotlib.pyplot as plt
 import seaborn as sns
-from logging_config import configure_logging
 
 
 
-# Configure logging
-loggers = configure_logging()
-logger = loggers["predict"]
+# Configure logging directly in this file
+def configure_logging():
+    """Configures logging for the script."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler("logs/predict.log"),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger("predict")
 
+
+# Initialize logger
+logger = configure_logging()
 logger.info("Predict script started.")
 
 class Predictor:
@@ -30,12 +41,16 @@ class Predictor:
             self.config = yaml.safe_load(file)
             
         self.model_dir = self.config["models_dir"]
-        self.test_data_path = os.path.join("data", "processed", self.config["test_data_path"])
+        self.test_data_path = self.config["test_data_path"]
         self.output_path = self.config["predictions_output"]       
         self.mlflow_experiment_name = self.config["mlflow_experiment_name"]
         self.model = None
         self.df = None          
-        # Set up mlflow experiment
+        # Set up MLflow experiment
+        # Set up MLflow experiment
+        mlflow_tracking_dir = os.path.abspath("mlruns")  # Use a local directory for MLflow
+        os.makedirs(mlflow_tracking_dir, exist_ok=True)  # Ensure the directory exists
+        mlflow.set_tracking_uri(f"file://{mlflow_tracking_dir}")
         mlflow.set_experiment(self.mlflow_experiment_name)
 
     def load_best_model(self):
@@ -43,62 +58,62 @@ class Predictor:
         try:
             best_model_path = os.path.join(self.model_dir, "best_model.pkl")
             if not os.path.exists(best_model_path):
-                logging.error(f"Best model not found in {self.model_dir}. Run evaluation first.")
+                logger.error(f"Best model not found in {self.model_dir}. Run evaluation first.")
                 return
 
             self.model = joblib.load(best_model_path)
-            logging.info(f"Best model loaded from {best_model_path}.")
+            logger.info(f"Best model loaded from {best_model_path}.")
         except Exception as e:
-            logging.error(f"Error loading best model: {e}")
+            logger.error(f"Error loading best model: {e}")
             raise
 
     def load_test_data(self):
         """Step 2: Load the test dataset for prediction."""
         try:
             self.df = pd.read_csv(self.test_data_path)
-            logging.info(f"Step 2: Test data loaded from {self.test_data_path}. ({self.df.shape[0]} rows)")
+            logger.info(f"Step 2: Test data loaded from {self.test_data_path}. ({self.df.shape[0]} rows)")
         except Exception as e:
-            logging.error(f"Error loading test data: {e}")
+            logger.error(f"Error loading test data: {e}")
             raise
 
     def make_predictions(self):
         """Step 3: Use the best model to make predictions on new data as integers."""
         if self.model is None:
-            logging.error("No model loaded. Run load_best_model() first.")
+            logger.error("No model loaded. Run load_best_model() first.")
             return
         if self.df is None:
-            logging.error("No test data loaded. Run load_test_data() first.")
+            logger.error("No test data loaded. Run load_test_data() first.")
             return
 
         # Define feature columns (same as used in training)
         feature_columns = ["time_spent", "doors_in_route", "assessed_value"]
         if not all(col in self.df.columns for col in feature_columns):
-            logging.error(f"Required feature columns are missing: {feature_columns}")
+            logger.error(f"Required feature columns are missing: {feature_columns}")
             return
 
         # Predict donation bags collected and round to the nearest integer
         X_test = self.df[feature_columns]
         self.df["predicted_donation_bags"] = self.model.predict(X_test).round().astype(int)
 
-        logging.info("Step 3: Predictions made successfully (rounded to integers).")
+        logger.info("Step 3: Predictions made successfully (rounded to integers).")
 
     def save_predictions(self, output_path="data/predictions/Food_Drive_2024_Predictions.csv"):
         """Step 4: Save predictions to a CSV file."""
         if self.df is None:
-            logging.error("No predictions available to save. Run make_predictions() first.")
+            logger.error("No predictions available to save. Run make_predictions() first.")
             return
 
         try:
             os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
             self.df.to_csv(self.output_path, index=False, encoding='utf-8')
-            logging.info(f"Step 4: Predictions saved to {output_path}.")
+            logger.info(f"Step 4: Predictions saved to {output_path}.")
             
             # Log predictions to mlflow
             with mlflow.start_run():
                 mlflow.log_artifact(self.output_path)
-                logging.info("Predictions logged to mlflow.")
+                logger.info("Predictions logged to mlflow.")
         except Exception as e:
-            logging.error(f"Error saving predictions: {e}")
+            logger.error(f"Error saving predictions: {e}")
             
     def track_predictions_with_dvc(self):
         """Track predictions file with DVC."""
@@ -107,22 +122,25 @@ class Predictor:
             subprocess.run(["git", "add", self.output_path + ".dvc"], check=True)
             subprocess.run(["git", "commit", "-m", "Tracked predictions with DVC"], check=True)
             subprocess.run(["dvc", "push"], check=True)
-            logging.info("Predictions successfully tracked and pushed to DVC.")
+            logger.info("Predictions successfully tracked and pushed to DVC.")
         except Exception as e:
-            logging.error(f"DVC tracking failed: {e}")
+            logger.error(f"DVC tracking failed: {e}")
             
     def predict_pipeline(self):
         """Runs the full prediction pipeline step by step."""
-        logging.info("Starting prediction pipeline...")
+        logger.info("Starting prediction pipeline...")
         self.load_best_model()
         self.load_test_data()
         self.make_predictions()
         self.save_predictions()
-        logging.info("Prediction pipeline complete.")
+        self.track_predictions_with_dvc
+        logger.info("Prediction pipeline complete.")
 
 
-# Example Usage
 if __name__ == "__main__":
-    predictor = Predictor()
-    predictor.predict_pipeline()
-    subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    try:
+        predictor = Predictor()
+        predictor.predict_pipeline()
+        logger.info("Prediction pipeline executed successfully.")
+    except Exception as e:
+        logger.error(f"An error occurred during the prediction pipeline: {e}")

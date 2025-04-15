@@ -18,21 +18,12 @@ services:
       - ./configs:/app/configs
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
-      - FLASK_APP=src/predict_api.py
+      - PROMETHEUS_PORT=8022  # Prometheus metrics server port
+      - FLASK_PORT=9000 
     working_dir: /app
-    command: flask run --host=0.0.0.0 --port=9000
+    command: python src/predict_api.py 
     networks:
       - ml-network
-  train-metrics:
-    build:
-      context: .
-      dockerfile: Dockerfile.mlapp
-    container_name: train-metrics
-    ports:
-      - "8002:8002"
-    networks:
-      - ml-network
-    command: python src/train.py
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest
@@ -73,7 +64,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
-      - GF_USERS_ALLOW_SIGN_UP=true
+      - GF_USERS_ALLOW_SIGN_UP=true    
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning

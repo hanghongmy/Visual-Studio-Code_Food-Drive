@@ -24,7 +24,11 @@ class FeatureAnalysis:
             self.config = yaml.safe_load(file)
 
         # Set paths from config
-        self.data_path = os.path.join("data", "processed", self.config["test_data_path"])  # Test data path
+        self.data_path = (
+    self.config["test_data_path"]
+    if self.config["test_data_path"].startswith("data/processed")
+    else os.path.join("data", "processed", self.config["test_data_path"])
+)  # Test data path
         self.model_path = os.path.join(self.config["models_dir"], "best_model.pkl")  # Best model path
         self.reports_dir = self.config["reports_dir"]
         self.feature_columns = self.config["feature_columns"]
@@ -100,8 +104,6 @@ class FeatureAnalysis:
         with mlflow.start_run(run_name="Feature Importance Analysis"):
             mlflow.log_artifact(save_path)
 
-        # Track with DVC
-        self.track_report_with_dvc(save_path)
 
         # Print feature importance
         print("\n=== Feature Importance ===")
@@ -131,20 +133,6 @@ class FeatureAnalysis:
         with mlflow.start_run(run_name="Feature Correlation Analysis"):
             mlflow.log_artifact(save_path)
 
-        # Track with DVC
-        self.track_report_with_dvc(save_path)
-
-    def track_report_with_dvc(self, file_path):
-        """Tracks the generated report files with DVC."""
-        try:
-            subprocess.run(["dvc", "add", file_path], check=True)
-            subprocess.run(["git", "add", file_path + ".dvc"], check=True)
-            subprocess.run(["git", "commit", "-m", f"Tracked {file_path} with DVC"], check=True)
-            subprocess.run(["dvc", "push"], check=True)
-            logging.info(f"Report {file_path} successfully tracked and pushed to DVC.")
-        except subprocess.CalledProcessError as e:
-            logging.error(f"DVC tracking failed for {file_path}: {e}")
-
     def run_analysis(self):
         """Runs the full feature analysis pipeline."""
         logging.info("Starting feature analysis pipeline...")
@@ -158,4 +146,4 @@ class FeatureAnalysis:
 if __name__ == "__main__":
     analyzer = FeatureAnalysis()
     analyzer.run_analysis()
-    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    subprocess.run(["mlflow", "server", "--host", "127.0.0.1", "--port", "5005"])

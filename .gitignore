@@ -15,3 +15,11 @@ prometheus/prometheus.yml
 logs/
 logs/predict.log
 logs/train.log
+
+# Compiled python cache
+__pycache__/
+
+.dvc/
+
+data/processed/
+data/raw/

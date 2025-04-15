@@ -161,10 +161,37 @@ class Trainer:
         self.train_models()
         logger.info("Training pipeline complete.")
 
+#if __name__ == "__main__":
+#    logger.info("Starting training script...")
+#    trainer = Trainer(config_path="configs/train_config.yaml")
+#    trainer.train_pipeline()
+#    logger.info("Training completed.")
+#    while True:
+#        time.sleep(1)  # Keep the application running to expose metrics
+
 if __name__ == "__main__":
     logger.info("Starting training script...")
+
+    # Set MLflow experiment
+    experiment_name = "FoodDrive_Training"
+    try:
+        mlflow.set_experiment(experiment_name)
+        logger.info(f"Using MLflow experiment: {experiment_name}")
+    except Exception as e:
+        logger.error(f"Failed to set MLflow experiment: {e}")
+        exit(1)
+
+    # Initialize the Trainer and run the training pipeline
     trainer = Trainer(config_path="configs/train_config.yaml")
     trainer.train_pipeline()
+
+    # Log the configuration file as an artifact
+    try:
+        mlflow.log_artifact("configs/train_config.yaml")
+        logger.info("Configuration file logged as an artifact.")
+    except Exception as e:
+        logger.error(f"Failed to log configuration file: {e}")
+
     logger.info("Training completed.")
     while True:
         time.sleep(1)  # Keep the application running to expose metrics

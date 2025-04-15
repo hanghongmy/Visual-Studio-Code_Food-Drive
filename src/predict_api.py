@@ -142,11 +142,15 @@ def update_metrics():
 if __name__ == "__main__":
     logger.info("Starting API server...")
 
+    # Get ports from environment variables or use defaults
+    prometheus_port = int(os.getenv("PROMETHEUS_PORT", 8022))  # Default to 8022
+    flask_port = int(os.getenv("FLASK_PORT", 5002))  # Default to 5002
+
     # Start Prometheus metrics server
-    threading.Thread(target=start_http_server, args=(8020,), daemon=True).start()
+    threading.Thread(target=start_http_server, args=(prometheus_port,), daemon=True).start()
     
     # Start resource monitoring in a separate thread
     threading.Thread(target=monitor_resources, daemon=True).start()
 
-    # Start Flask app on a different port
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    # Start Flask app
+    app.run(host="0.0.0.0", port=flask_port, debug=True)

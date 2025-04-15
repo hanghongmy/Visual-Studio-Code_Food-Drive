@@ -7,16 +7,31 @@ import requests
 import json
 import argparse
 import logging
-
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-def check_api(data, endpoint, host="localhost", port=5000):
+def create_session(retries=3, backoff_factor=0.3, status_forcelist=(500, 502, 503, 504)):
+    """Create a session with retry logic"""
+    session = requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=status_forcelist,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+def check_api(data, endpoint, host="localhost", port=5003):
     """Check the API with input data"""
     url = f"http://{host}:{port}{endpoint}"
     headers = {'Content-Type': 'application/json'}
-
+    session = create_session()
     logger.info(f"Sending request to {url} with data: {data}")
     try:
         response = requests.post(url, headers=headers, json=data, timeout=30)
@@ -45,8 +60,8 @@ def main():
                         help='API endpoint (e.g., /v1/predict or /v2/predict)')
     parser.add_argument('--host', default='localhost', 
                         help='API host (default: localhost)')
-    parser.add_argument('--port', type=int, default=5000, 
-                        help='API port (default: 5000)')
+    parser.add_argument('--port', type=int, default=5003, 
+                        help='API port (default: 5003)')
     
     args = parser.parse_args()
 

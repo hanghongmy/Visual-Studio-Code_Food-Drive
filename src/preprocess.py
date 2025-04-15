@@ -4,12 +4,15 @@ import logging
 import mlflow
 import subprocess
 
-mlflow.set_tracking_uri("file:./mlruns")  #Force local mlruns folder
+# Set MLflow tracking URI to use a local directory
+mlflow.set_tracking_uri("file:./mlruns")
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class Preprocessor:
     def __init__(self, raw_data_path, external_data_path_assessed, processed_data_path):
+        mlflow.set_experiment("Data Preprocessing")
+        
         self.raw_data_path = raw_data_path
         self.external_data_path_assessed = external_data_path_assessed      
         self.processed_data_path = processed_data_path
