@@ -23,3 +23,13 @@ __pycache__/
 
 data/processed/
 data/raw/
+
+# Ignore user-specific configuration
+.bash*
+.aws/
+.azure/
+.cache/
+.conda/
+.huggingface/
+.gitconfig
+.history
