@@ -21,14 +21,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger('ml_app.train')
 
-# Start Prometheus metrics server
-start_http_server(8002)
-
 # Prometheus metrics
 training_loss = Gauge('training_loss', 'Training loss of the model')
 epoch_count = Counter('training_epoch_total', 'Total number of epochs completed')
-validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy of the model')
+validation_accuracy = Gauge('validation_accuracy', 'Validation accuracy of the model')# Start Prometheus metrics server
 
+start_http_server(8002)
 # Set MLflow tracking URI
 mlflow_tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
 mlflow.set_tracking_uri(mlflow_tracking_uri)

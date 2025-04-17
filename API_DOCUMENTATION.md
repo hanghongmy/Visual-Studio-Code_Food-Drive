@@ -26,8 +26,8 @@ Returns API usage information including available endpoints, required input form
 
 
 PROMETHEUS_PORT=8023 FLASK_PORT=5003 python src/predict_api.py
-
-
+PROMETHEUS_PORT=8006 FLASK_PORT=5004 python src/train_regression.py
+curl http://127.0.0.1:8005/metrics
 ### **🔹 cURL Command**
 curl -X GET http://127.0.0.1:5003/food_drive_home
 
@@ -79,7 +79,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_
 #### Response 
 {
   "prediction": [
-    4.621319940608169
+    22.068840579710145
   ]
 }
 
@@ -103,7 +103,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"time_spent": 1.5, "doors_
 #### Response 
 {
   "prediction": [
-    12.201500237162701
+    15.669380952380953
   ]
 }
 
@@ -126,3 +126,5 @@ HTTP Code	 Message	                Description
 # Running the Train.py
 
 MLFLOW_TRACKING_URI=http://127.0.0.1:5000 python src/train.py
+
+curl http://localhost:8006/metrics

@@ -75,20 +75,35 @@ class RegressionMonitor(TrainingMonitor):
         self.r_squared = Gauge('regression_r_squared', 'R-squared coefficient')
         self.feature_importance = Gauge('feature_importance', 'Feature importance value', ['feature_name'])
 
+        # Initialize a dictionary to store metrics
+        self.metrics = {
+            "mse": None,
+            "rmse": None,
+            "mae": None,
+            "r_squared": None,
+            "feature_importance": {}
+        }
+
     def record_metrics(self, mse=None, rmse=None, mae=None, r_squared=None, feature_importance=None):
         """Record regression metrics."""
         if mse is not None:
             self.mse.set(mse)
+            self.metrics["mse"] = mse
         if rmse is not None:
             self.rmse.set(rmse)
+            self.metrics["rmse"] = rmse
         if mae is not None:
             self.mae.set(mae)
+            self.metrics["mae"] = mae
         if r_squared is not None:
             self.r_squared.set(r_squared)
+            self.metrics["r_squared"] = r_squared
         if feature_importance is not None:
             sorted_features = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5]
+            self.metrics["feature_importance"] = {feature_name: importance for feature_name, importance in sorted_features}
             for feature_name, importance in sorted_features:
                 self.feature_importance.labels(feature_name=feature_name).set(importance)
+
 
     def reset_metrics(self):
         """Reset all regression metrics to their default state."""
@@ -96,6 +111,17 @@ class RegressionMonitor(TrainingMonitor):
         self.rmse.set(0)
         self.mae.set(0)
         self.r_squared.set(0)
+        self.metrics = {
+            "mse": None,
+            "rmse": None,
+            "mae": None,
+            "r_squared": None,
+            "feature_importance": {}
+        }
+
+    def get_metrics(self):
+        """Retrieve the current metrics."""
+        return self.metrics
 
 
 #class TreeModelMonitor(TrainingMonitor):

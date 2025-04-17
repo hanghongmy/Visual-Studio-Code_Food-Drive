@@ -70,3 +70,29 @@ The ML pipeline integrates Prometheus for real-time metrics collection and Grafa
 - LowValidationAccuracy:
     + validation_accuracy < 0.8: < 80% for 5 min
 
+# When conflict occur:
+- If train.py fail :
+    + update start-http_server(8002) to 8003
+    + prometheus.yml: update model-training -> localhost: to 8003
+    + docker-compose.yml: train-metrics from 8002 to 8003
+
+- train_regression.py :
+    + monitor = RegressionMonitor(port=8012) to 8013
+    + docker-compose.yml update train-metrics from 8012:8012 to 8013:8013
+    + prometheus.yml update train-metrics: 8012 to 8013
+
+- predict_api.py:
+    + update port 5001 to 5002
+    + docker-compose: update ml-app from 5001: 5001 to 5002:5002
+    + prometheus: ml-api update from localhost:5001 to 5002
+    + docker-compose down and up --build
+
+- Check docker image:
+    + docker images
+    + docker rmi <image_id> (remove unused images)
+
+- Identify the process using port 8020
+    + sudo lsof -i :8020
+    + sudo kill -9 <id> (stop the process)
+
+

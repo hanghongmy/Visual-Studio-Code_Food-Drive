@@ -29,7 +29,7 @@ def configure_logging():
 logger = configure_logging()
 logger.info("Predict script started.")
 
-class Predictor:
+class Predictor:    # class makes ML model modular, testable, and reusable - production ready
     def __init__(self, config_path="configs/predict_config.yaml"):
         """
         Initializes the Predictor class.

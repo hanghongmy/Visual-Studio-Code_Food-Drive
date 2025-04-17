@@ -23,7 +23,7 @@ class Evaluator:
         with open(config_path, "r") as file:
             self.config = yaml.safe_load(file)
 
-            self.test_data_path = os.path.join("data", "processed", self.config["test_data_path"])
+            self.test_data_path = os.path.join(self.config["test_data_path"])
             self.models_dir = self.config["models_dir"]
             self.df = None
             self.models = {}
@@ -150,4 +150,4 @@ if __name__ == "__main__":
     evaluator = Evaluator()
     evaluator.evaluate_pipeline()
     # Start the MLflow server
-    subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5000"])
+    subprocess.run(["./venv/bin/mlflow", "server", "--host", "127.0.0.1", "--port", "5003"])

@@ -5,6 +5,7 @@ from logging.handlers import RotatingFileHandler
 from utils.monitoring import RegressionMonitor
 from threading import Thread
 from flask import Flask, jsonify
+from prometheus_client import start_http_server
 """
 Regression training script with monitoring and logging. This used for train a regression model.
     - Monitoring: uses the RegressionMonitor to track training progress, including epochs,
@@ -17,7 +18,7 @@ Regression training script with monitoring and logging. This used for train a re
 """
 # Initialize Flask app
 app = Flask(__name__)
-
+start_http_server(8008)  # Start Prometheus metrics server on port 8006
 # Configure logging
 log_directory = 'logs'
 os.makedirs(log_directory, exist_ok=True)
@@ -40,8 +41,10 @@ logger.addHandler(file_handler)
 logger.info("Starting regression training process...")
 
 # Initialize the RegressionMonitor
-monitor = RegressionMonitor(port=8002)
+monitor = RegressionMonitor(port=8006)
 
+# Variablel to store final metrics after training
+final_metrics = {}
 # Define a route to expose metrics
 @app.route('/metrics', methods=['GET'])
 def get_metrics():
@@ -84,14 +87,13 @@ for epoch in range(10):
     r_squared = 0.9 + 0.01 * epoch
     monitor.record_metrics(mse=mse, rmse=rmse, mae=mae, r_squared=r_squared)
     logger.info(f"Epoch {epoch + 1}: MSE = {mse:.4f}, RMSE = {rmse:.4f}, MAE = {mae:.4f}, R² = {r_squared:.4f}")
-    # Update metrics one last time
-    monitor.record_metrics(mse=mse, rmse=rmse, mae=mae, r_squared=r_squared)
 
+# Store final metrics after training is complete
+final_metrics = monitor.get_metrics()
+logger.info("Final metrics: %s", final_metrics)
 logger.info("Regression training process completed.")
 
 if __name__ == "__main__":
     logger.info("Training completed. Keeping the application running to expose metrics.")
-    
-    app.run(host="0.0.0.0", port=8004, debug=True)
     while True:
         time.sleep(1)

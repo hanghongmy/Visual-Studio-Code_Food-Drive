@@ -13,7 +13,7 @@ import lime
 import lime.lime_tabular
 import matplotlib.pyplot as plt
 import traceback
-
+import socket
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -179,6 +179,7 @@ def validate_input(data):
         return False, f"Missing features: {missing_features}"
     return True, None
 
+
 def monitor_resources():
     """Update system resource metrics every 15 seconds"""
     while True:
@@ -186,8 +187,17 @@ def monitor_resources():
         memory_usage.set(process.memory_info().rss)  # in bytes
         cpu_usage.set(process.cpu_percent())
         time.sleep(15)
-
+def find_free_port():
+    """Find an available port dynamically."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        return s.getsockname()[1]
+    
 if __name__ == "__main__":
     logger.info("Starting API server...")
     threading.Thread(target=monitor_resources, daemon=True).start()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+
+    # Dynamically find a free port
+    port = find_free_port()
+    logger.info(f"API server running on port {port}")
+    app.run(host="0.0.0.0", port=port, debug=True)

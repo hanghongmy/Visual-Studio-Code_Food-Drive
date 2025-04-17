@@ -1,4 +1,5 @@
 [core]
-    remote = gdrive_remote
-['remote "gdrive_remote"']
-    url = gdrive://1p1SZiOeMQuPIRZnoTQM9YBORmsp5CjM9
+    autostage = true
+    remote = myremote
+['remote "myremote"']
+    url = /path/to/local/storage
